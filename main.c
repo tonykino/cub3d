@@ -131,17 +131,70 @@ void clear_img(t_img *img)
 	}
 }
 
+int	encode_rgb(uint8_t red, uint8_t green, uint8_t blue)
+{
+	// printf("red = %d, green = %d, blue = %d\n", red, green, blue);
+	return (red << 16 | green << 8 | blue);
+}
+
+int calc_color(uint8_t red, uint8_t green, uint8_t blue)
+{
+	static int x = 0;
+	if(x>=0 && x<255){
+		red = 255;
+		green = x;
+		blue = 0;
+	}
+	if(x>=255 && x<510){
+		red = 510-x;
+		green = 255;
+		blue = 0;
+	}
+	if(x>=510 && x<765){
+		red = 0;
+		green = 255;
+		blue = x-510;
+	}
+	if(x>=765 && x<1020){
+		red = 0;
+		green = 1020-x;
+		blue = 255;
+	}
+	if(x>=1020 && x<1275){
+		red = x-1020;
+		green = 0;
+		blue = 255;
+	}
+	if(x>=1275 && x<=1530){
+		red = 255;
+		green = 0;
+		blue = 1530-x;
+	}
+	x += 1;
+	if (x > 1530)
+		x = 0;
+	return (encode_rgb(red, green, blue));
+}
+
 int render(t_data *data)
 {
 	if (data->win_ptr == NULL)
 		return 1;
 	
-	clear_img(&data->img);
+	// clear_img(&data->img);
+	mlx_clear_window(data->mlx_ptr, data->win_ptr);
 	
 	static int dir = SE;
-	static t_rect rect = {40, 40, 100, 60, 0x00FF0000};
+	static uint8_t red = 255;
+	static uint8_t green = 0;
+	static uint8_t blue = 0;
+	static t_rect rect = {40, 40, 40, 40, 0x00FF0000};
 
+	// printf("color = %x\n", rect.color);
 	draw_rectangle(&data->img, &rect);
+	// rect.color = encode_rgb(red, green, blue);
+	rect.color = calc_color(red, green, blue);
+	// printf("color = %x\n", rect.color);
 
 	if (rect.y + rect.height > SCENE_HEIGHT)
 	{
@@ -150,7 +203,6 @@ int render(t_data *data)
 		else if (dir == SO)
 			dir = NO;
 	}
-
 	if (rect.y < 0 )
 	{
 		if (dir == NE)
@@ -158,7 +210,6 @@ int render(t_data *data)
 		else if (dir == NO)
 			dir = SO;
 	}
-
 	if (rect.x + rect.width > SCENE_WIDTH)
 	{
 		if (dir == NE)
@@ -166,7 +217,6 @@ int render(t_data *data)
 		else if (dir == SE)
 			dir = SO;
 	}
-
 	if (rect.x < 0)
 	{
 		if (dir == NO)
@@ -195,7 +245,6 @@ int render(t_data *data)
 		rect.x -= 2;
 		rect.y += 2;
 	}
-	
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 	return 0;
 }
