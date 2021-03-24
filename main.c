@@ -188,7 +188,7 @@ int render(t_data *data)
 	static uint8_t red = 255;
 	static uint8_t green = 0;
 	static uint8_t blue = 0;
-	static t_rect rect = {40, 40, 40, 40, 0x00FF0000};
+	static t_rect rect = {40, 40, 1, 1, 0x00FF0000};
 
 	// printf("color = %x\n", rect.color);
 	draw_rectangle(&data->img, &rect);
@@ -227,23 +227,23 @@ int render(t_data *data)
 
 	if (dir == SE)
 	{
-		rect.x += 2;
-		rect.y += 2;
+		rect.x += 1;
+		rect.y += 1;
 	}
 	else if (dir == NE)
 	{
-		rect.x += 2;
-		rect.y -= 2;
+		rect.x += 1;
+		rect.y -= 1;
 	}
 	else if (dir == NO)
 	{
-		rect.x -= 2;
-		rect.y -= 2;
+		rect.x -= 1;
+		rect.y -= 1;
 	}
 	else if (dir == SO)
 	{
-		rect.x -= 2;
-		rect.y += 2;
+		rect.x -= 1;
+		rect.y += 1;
 	}
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 	return 0;
