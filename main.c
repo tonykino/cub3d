@@ -46,6 +46,7 @@ void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, 
 	float corrected_distance;
 	int wall_top_pixel;
 	int wall_bottom_pixel;
+	uint32_t color;
 
 	x = 0;
 	while (x < NUM_RAYS)
@@ -62,10 +63,24 @@ void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, 
 		if (wall_bottom_pixel >= WINDOW_HEIGHT)
 			wall_bottom_pixel = WINDOW_HEIGHT - 1;
 
-		y = wall_top_pixel;
+		y = 0;
+		while (y < wall_top_pixel)
+		{
+			color_buffer_pixel_put(color_buffer, x, y, 0x0087CEEB);
+			y++;
+		}
 		while (y < wall_bottom_pixel)
 		{
-			color_buffer_pixel_put(color_buffer, x, y, 0x00AAAAAA);
+			if (rays[x].was_hit_vertical)
+				color = 0x00AAAAAA;
+			else
+				color = 0x00CCCCCC;
+			color_buffer_pixel_put(color_buffer, x, y, color);
+			y++;
+		}
+		while (y < WINDOW_HEIGHT)
+		{
+			color_buffer_pixel_put(color_buffer, x, y, 0x008B5A2B);
 			y++;
 		}
 		x++;
