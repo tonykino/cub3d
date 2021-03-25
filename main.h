@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <mlx.h>
@@ -6,4 +7,6 @@
 
 #include "libft.h"
 #include "constants.h"
-#include "structs.h"
+#include "struct.h"
+#include "hook.h"
+#include "render.h"

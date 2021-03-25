@@ -1,3 +1,5 @@
+#include "libft.h"
+
 void	ft_bzero(void *s, size_t n)
 {
 	size_t			i;
@@ -25,3 +27,9 @@ void	*ft_calloc(size_t count, size_t size)
 	return (dst);
 }
 
+
+int	encode_rgb(uint8_t red, uint8_t green, uint8_t blue)
+{
+	// printf("red = %d, green = %d, blue = %d\n", red, green, blue);
+	return (red << 16 | green << 8 | blue);
+}

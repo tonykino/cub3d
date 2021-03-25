@@ -1,3 +1,5 @@
+#ifndef STRUCT_H
+# define STRUCT_H
 typedef struct  s_img {
     void	*mlx_img;
     char	*addr;
@@ -14,6 +16,14 @@ typedef struct s_rect {
 	int height;
 	int color;
 }	t_rect;
+
+typedef struct s_line {
+	int x0;
+	int y0;
+	int x1;
+	int y1;
+	int color;
+}	t_line;
 
 typedef struct s_player {
 	float x;
@@ -41,3 +51,4 @@ typedef struct s_data
 	t_map 		map_p;
 	t_player	player;
 }	t_data;
+#endif
