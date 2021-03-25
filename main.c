@@ -37,20 +37,22 @@ void	init_data(t_data *data)
 					);	
 }
 
-void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_ray rays[NUM_RAYS])
+void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, t_ray rays[NUM_RAYS])
 {
 	int x;
 	int y;
 	float distance_proj_plane;
 	float projected_wall_height;
+	float corrected_distance;
 	int wall_top_pixel;
 	int wall_bottom_pixel;
 
 	x = 0;
 	while (x < NUM_RAYS)
 	{
+		corrected_distance = rays[x].distance * cos(rays[x].ray_angle - player->rotation_angle);
 		distance_proj_plane = (WINDOW_WIDTH / 2) / tan(FOV_ANGLE / 2);
-		projected_wall_height = (map->tile_size / rays[x].distance) * distance_proj_plane;
+		projected_wall_height = (map->tile_size / corrected_distance) * distance_proj_plane;
 
 		wall_top_pixel = (WINDOW_HEIGHT / 2) - ((int)projected_wall_height / 2);
 		if (wall_top_pixel < 0)
@@ -93,7 +95,6 @@ void	render_map(uint32_t *color_buffer, t_map *map)
 				rect.color = 0x00123456;
 
 			render_rectangle(color_buffer, &rect);
-
 			j++;
 		}
 		i++;
@@ -140,7 +141,7 @@ void render_player(uint32_t *color_buffer, t_player *player)
 
 void render_scene(t_data *data)
 {
-	render_3D_projection(data->color_buffer, &data->map, data->rays);
+	render_3D_projection(data->color_buffer, &data->map, &data->player, data->rays);
 	render_map(data->color_buffer, &data->map);
 	render_rays(data->color_buffer, &data->player, data->rays);
 	render_player(data->color_buffer, &data->player);
