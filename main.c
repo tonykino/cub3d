@@ -37,7 +37,7 @@ void	init_data(t_data *data)
 					);	
 }
 
-void render_map(t_img *img, t_map *map_p)
+void render_map(uint32_t *color_buffer, t_map *map_p)
 {
 	int i;
 	int j;
@@ -59,7 +59,7 @@ void render_map(t_img *img, t_map *map_p)
 			else
 				rect.color = 0x00123456;
 
-			render_rectangle(img, &rect);
+			render_rectangle(color_buffer, &rect);
 
 			j++;
 		}
@@ -67,7 +67,7 @@ void render_map(t_img *img, t_map *map_p)
 	}
 }
 
-void render_rays(t_img *img, t_player *player, t_ray rays[NUM_RAYS])
+void render_rays(uint32_t *color_buffer, t_player *player, t_ray rays[NUM_RAYS])
 {
 	int i;
 	t_line line;
@@ -80,12 +80,12 @@ void render_rays(t_img *img, t_player *player, t_ray rays[NUM_RAYS])
 		line.x1 = rays[i].wall_hit_x * MINIMAP_SCALE_FACTOR;
 		line.y1 = rays[i].wall_hit_y * MINIMAP_SCALE_FACTOR;
 		line.color = 0x00FF0000;
-		render_line(img, &line);
+		render_line(color_buffer, &line);
 		i++;
 	}
 }
 
-void render_player(t_img *img, t_player *player)
+void render_player(uint32_t *color_buffer, t_player *player)
 {
 	t_rect player_rect;
 	t_line player_line;
@@ -95,21 +95,21 @@ void render_player(t_img *img, t_player *player)
 	player_rect.width = player->width * MINIMAP_SCALE_FACTOR;
 	player_rect.height = player->height * MINIMAP_SCALE_FACTOR;
 	player_rect.color = 0x00FFFF00;
-	render_rectangle(img, &player_rect);
+	render_rectangle(color_buffer, &player_rect);
 
 	player_line.x0 = player->x * MINIMAP_SCALE_FACTOR;
 	player_line.y0 = player->y * MINIMAP_SCALE_FACTOR;
 	player_line.x1 = (player->x + cos(player->rotation_angle) * 40) * MINIMAP_SCALE_FACTOR;
 	player_line.y1 = (player->y + sin(player->rotation_angle) * 40) * MINIMAP_SCALE_FACTOR;
 	player_line.color = 0x00FFFF00;
-	render_line(img, &player_line);
+	render_line(color_buffer, &player_line);
 }
 
 void render_scene(t_data *data)
 {
-	render_map(&data->img, &data->map_p);
-	render_rays(&data->img, &data->player, data->rays);
-	render_player(&data->img, &data->player);
+	render_map(data->color_buffer, &data->map_p);
+	render_rays(data->color_buffer, &data->player, data->rays);
+	render_player(data->color_buffer, &data->player);
 }
 
 void move_player(t_player *player, t_map *map)
@@ -144,10 +144,12 @@ int update_and_render(t_data *data)
 	
 	mlx_clear_window(data->mlx_ptr, data->win_ptr); // Useless ?
 	// clear_img(&data->img);
+	clear_color_buffer(data->color_buffer, 0x0000FFFF);
 
 	update_scene(data);
 	render_scene(data);
 	
+	copy_color_buffer_in_image(data->color_buffer, &data->img);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 	return 0;
 }
@@ -176,6 +178,10 @@ void setup(t_data *data)
 {
 	setup_player(&data->player);
 	setup_map(&data->map_p);
+	data->color_buffer = (uint32_t*)ft_calloc(
+		(uint32_t)WINDOW_WIDTH * (uint32_t)WINDOW_HEIGHT,
+		sizeof(uint32_t)
+	);
 }
 
 int             main(void)
@@ -190,6 +196,7 @@ int             main(void)
 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
     mlx_loop(data.mlx_ptr);
 
+	free(data.color_buffer);
 	mlx_destroy_image(data.mlx_ptr, data.img.mlx_img);
 
 	return(0);

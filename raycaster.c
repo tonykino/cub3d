@@ -161,12 +161,12 @@ void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map_p)
 	if (found_horz_wall_hit)
 		horz_hit_distance = distance_between_points(player->x, player->y, horz_wall_hit_x, horz_wall_hit_y);
 	else
-		horz_hit_distance = INT_MAX;
+		horz_hit_distance = FLT_MAX;
 	
 	if (found_vert_wall_hit)
 		vert_hit_distance = distance_between_points(player->x, player->y, vert_wall_hit_x, vert_wall_hit_y);
 	else
-		vert_hit_distance = INT_MAX;
+		vert_hit_distance = FLT_MAX;
 
 	if (vert_hit_distance < horz_hit_distance)
 	{

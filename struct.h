@@ -2,6 +2,7 @@
 # define STRUCT_H
 
 # include <stdbool.h>
+# include <stdlib.h>
 # include "constants.h"
 
 typedef struct  s_img {
@@ -64,6 +65,7 @@ typedef struct s_data
 {
     void    	*mlx_ptr;
     void    	*win_ptr;
+	uint32_t	*color_buffer;
     t_img		img;
 	t_map 		map_p;
 	t_player	player;

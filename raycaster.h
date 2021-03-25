@@ -4,6 +4,7 @@
 # include <math.h>
 # include <stdbool.h>
 # include <limits.h>
+# include <float.h>
 # include "struct.h"
 # include "constants.h"
 
