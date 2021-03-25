@@ -5,11 +5,11 @@ const int map[13][20] = { \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
@@ -112,19 +112,40 @@ void render_scene(t_data *data)
 	render_player(&data->img, &data->player);
 }
 
-void move_player(t_player *player)
+bool map_has_wall_at(t_map *map_p, float x, float y)
+{
+	int map_x_index;
+	int map_y_index;
+
+	if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)
+		return (true);
+	map_x_index = floor(x / map_p->tile_size);
+	map_y_index = floor(y / map_p->tile_size);
+	return (map[map_y_index][map_x_index] == 1);
+}
+
+void move_player(t_player *player, t_map *map)
 {
 	float move_step;
+	float new_player_x;
+	float new_player_y;
 
 	player->rotation_angle += player->turn_direction * player->turn_speed;
 	move_step = player->walk_direction * player->walk_speed;
-	player->x += cos(player->rotation_angle) * move_step;
-	player->y += sin(player->rotation_angle) * move_step;
+	new_player_x = player->x + cos(player->rotation_angle) * move_step;
+	new_player_y = player->y + sin(player->rotation_angle) * move_step;
+
+
+	if (!map_has_wall_at(map, new_player_x, new_player_y))
+	{
+		player->x = new_player_x;
+		player->y = new_player_y;
+	}
 }
 
 void update_scene(t_data *data)
 {
-	move_player(&data->player);
+	move_player(&data->player, &data->map_p);
 }
 
 int update_and_render(t_data *data)
