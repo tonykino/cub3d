@@ -1,5 +1,23 @@
 #include "render.h"
 
+void clear_img(t_img *img)
+{
+	int x;
+	int y;
+
+	x = 0;
+	while (x < WINDOW_WIDTH)
+	{	
+		y = 0;
+		while (y < WINDOW_HEIGHT)
+		{
+			img_pixel_put(img, x, y, 0x000000);
+			y++;
+		}
+		x++;
+	}
+}
+
 bool pixel_is_out_of_screen(t_img *img, int x, int y)
 {
 	if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)

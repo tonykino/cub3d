@@ -10,3 +10,4 @@
 #include "struct.h"
 #include "hook.h"
 #include "render.h"
+#include "raycaster.h"

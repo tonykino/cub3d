@@ -7,7 +7,7 @@
 # include "struct.h"
 # include "constants.h"
 
-
+void clear_img(t_img *img);
 bool pixel_is_out_of_screen(t_img *img, int x, int y);
 void	img_pixel_put(t_img *img, int x, int y, int color);
 void	render_rectangle(t_img *img, t_rect *rect);

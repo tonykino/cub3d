@@ -3,9 +3,9 @@
 const int map[13][20] = { \
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
@@ -35,24 +35,6 @@ void	init_data(t_data *data)
 						&data->img.line_len, 
 						&data->img.endian
 					);	
-}
-
-void clear_img(t_img *img)
-{
-	int x;
-	int y;
-
-	x = 0;
-	while (x < WINDOW_WIDTH)
-	{	
-		y = 0;
-		while (y < WINDOW_HEIGHT)
-		{
-			img_pixel_put(img, x, y, 0x000000);
-			y++;
-		}
-		x++;
-	}
 }
 
 void render_map(t_img *img, t_map *map_p)
@@ -85,6 +67,24 @@ void render_map(t_img *img, t_map *map_p)
 	}
 }
 
+void render_rays(t_img *img, t_player *player, t_ray rays[NUM_RAYS])
+{
+	int i;
+	t_line line;
+
+	i = 0;
+	while (i < NUM_RAYS)
+	{
+		line.x0 = player->x * MINIMAP_SCALE_FACTOR;
+		line.y0 = player->y * MINIMAP_SCALE_FACTOR;
+		line.x1 = rays[i].wall_hit_x * MINIMAP_SCALE_FACTOR;
+		line.y1 = rays[i].wall_hit_y * MINIMAP_SCALE_FACTOR;
+		line.color = 0x00FF0000;
+		render_line(img, &line);
+		i++;
+	}
+}
+
 void render_player(t_img *img, t_player *player)
 {
 	t_rect player_rect;
@@ -94,34 +94,22 @@ void render_player(t_img *img, t_player *player)
 	player_rect.y = (player->y - player->height / 2) * MINIMAP_SCALE_FACTOR;
 	player_rect.width = player->width * MINIMAP_SCALE_FACTOR;
 	player_rect.height = player->height * MINIMAP_SCALE_FACTOR;
-	player_rect.color = 0x00FF0000;
+	player_rect.color = 0x00FFFF00;
 	render_rectangle(img, &player_rect);
 
 	player_line.x0 = player->x * MINIMAP_SCALE_FACTOR;
 	player_line.y0 = player->y * MINIMAP_SCALE_FACTOR;
 	player_line.x1 = (player->x + cos(player->rotation_angle) * 40) * MINIMAP_SCALE_FACTOR;
 	player_line.y1 = (player->y + sin(player->rotation_angle) * 40) * MINIMAP_SCALE_FACTOR;
-	player_line.color = 0x00FF0000;
+	player_line.color = 0x00FFFF00;
 	render_line(img, &player_line);
 }
 
 void render_scene(t_data *data)
 {
 	render_map(&data->img, &data->map_p);
-	// render_rays();
+	render_rays(&data->img, &data->player, data->rays);
 	render_player(&data->img, &data->player);
-}
-
-bool map_has_wall_at(t_map *map_p, float x, float y)
-{
-	int map_x_index;
-	int map_y_index;
-
-	if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)
-		return (true);
-	map_x_index = floor(x / map_p->tile_size);
-	map_y_index = floor(y / map_p->tile_size);
-	return (map[map_y_index][map_x_index] == 1);
 }
 
 void move_player(t_player *player, t_map *map)
@@ -146,6 +134,7 @@ void move_player(t_player *player, t_map *map)
 void update_scene(t_data *data)
 {
 	move_player(&data->player, &data->map_p);
+	cast_all_rays(data);
 }
 
 int update_and_render(t_data *data)
@@ -153,11 +142,8 @@ int update_and_render(t_data *data)
 	if (data->win_ptr == NULL)
 		return 1;
 	
-	// mlx_clear_window(data->mlx_ptr, data->win_ptr); // Useless ?
+	mlx_clear_window(data->mlx_ptr, data->win_ptr); // Useless ?
 	// clear_img(&data->img);
-
-	// t_rect rect = {40, 40, 40, 40, 0x00FFFF00 };
-	// render_rectangle(&data->img, &rect);
 
 	update_scene(data);
 	render_scene(data);
@@ -175,8 +161,8 @@ void setup_player(t_player *player)
 	player->turn_direction = 0;
 	player->walk_direction = 0;
 	player->rotation_angle = M_PI_2;
-	player->walk_speed = 2;
-	player->turn_speed = 3 * (M_PI / 180);
+	player->walk_speed = 1;
+	player->turn_speed = 2 * (M_PI / 180);
 }
 
 void setup_map(t_map *map_p)
