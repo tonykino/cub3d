@@ -67,7 +67,7 @@ typedef struct s_data
     void    	*win_ptr;
 	uint32_t	*color_buffer;
     t_img		img;
-	t_map 		map_p;
+	t_map 		map;
 	t_player	player;
 	t_ray		rays[NUM_RAYS];
 }	t_data;

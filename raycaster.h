@@ -8,9 +8,9 @@
 # include "struct.h"
 # include "constants.h"
 
-extern const int map[13][20];
+extern const int grid[13][20];
 
-bool map_has_wall_at(t_map *map_p, float x, float y);
+bool map_has_wall_at(t_map *map, float x, float y);
 void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map);
 void cast_all_rays(t_data *data);
 

@@ -1,16 +1,16 @@
 #include "raycaster.h"
 
 
-bool map_has_wall_at(t_map *map_p, float x, float y)
+bool map_has_wall_at(t_map *map, float x, float y)
 {
 	int map_x_index;
 	int map_y_index;
 
 	if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)
 		return (true);
-	map_x_index = floor(x / map_p->tile_size);
-	map_y_index = floor(y / map_p->tile_size);
-	return (map[map_y_index][map_x_index] == 1);
+	map_x_index = floor(x / map->tile_size);
+	map_y_index = floor(y / map->tile_size);
+	return (grid[map_y_index][map_x_index] == 1);
 }
 
 float normalize_angle(float angle)
@@ -28,7 +28,7 @@ float distance_between_points(float x1, float y1, float x2, float y2)
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
 
-void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map_p)
+void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map)
 {
 	ray->ray_angle = normalize_angle(ray_angle);
 
@@ -58,18 +58,18 @@ void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map_p)
 	float next_horz_touch_y;
 	int horz_wall_content = 0;
 
-	yintercept = floor(player->y / map_p->tile_size) * map_p->tile_size;
+	yintercept = floor(player->y / map->tile_size) * map->tile_size;
 	if (ray->is_facing_down)
-		yintercept += map_p->tile_size;
+		yintercept += map->tile_size;
 
 	xintercept = player->x + (yintercept - player->y) / tan(ray->ray_angle);
 
 	if (ray->is_facing_down)
-		ystep = map_p->tile_size;
+		ystep = map->tile_size;
 	else
-		ystep = -1 * map_p->tile_size;
+		ystep = -1 * map->tile_size;
 
-	xstep = map_p->tile_size / tan(ray->ray_angle);
+	xstep = map->tile_size / tan(ray->ray_angle);
 	if ((xstep > 0 && ray->is_facing_left) || (xstep < 0 && ray->is_facing_right))
 		xstep *= -1;
 
@@ -85,13 +85,13 @@ void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map_p)
 		else
 			y_to_check = next_horz_touch_y;
 
-		if (map_has_wall_at(map_p, next_horz_touch_x, y_to_check))
+		if (map_has_wall_at(map, next_horz_touch_x, y_to_check))
 		{
 			horz_wall_hit_x = next_horz_touch_x;
 			horz_wall_hit_y = next_horz_touch_y;
-			next_horz_touch_y = floor(next_horz_touch_y / map_p->tile_size);
-			next_horz_touch_x = floor(next_horz_touch_x / map_p->tile_size);
-			horz_wall_content = map[(int)next_horz_touch_y][(int)next_horz_touch_x];
+			next_horz_touch_y = floor(next_horz_touch_y / map->tile_size);
+			next_horz_touch_x = floor(next_horz_touch_x / map->tile_size);
+			horz_wall_content = grid[(int)next_horz_touch_y][(int)next_horz_touch_x];
 			found_horz_wall_hit = true;
 			break;
 		}
@@ -110,18 +110,18 @@ void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map_p)
 	float next_vert_touch_y;
 	int vert_wall_content = 0;
 
-	xintercept = floor(player->x / map_p->tile_size) * map_p->tile_size;
+	xintercept = floor(player->x / map->tile_size) * map->tile_size;
 	if (ray->is_facing_right)
-		xintercept += map_p->tile_size;
+		xintercept += map->tile_size;
 
 	yintercept = player->y + (xintercept - player->x) * tan(ray->ray_angle);
 
 	if (ray->is_facing_right)
-		xstep = map_p->tile_size;
+		xstep = map->tile_size;
 	else
-		xstep = -1 * map_p->tile_size;
+		xstep = -1 * map->tile_size;
 
-	ystep = map_p->tile_size * tan(ray->ray_angle);
+	ystep = map->tile_size * tan(ray->ray_angle);
 	if ((ystep > 0 && ray->is_facing_up) || (ystep < 0 && ray->is_facing_down))
 		ystep *= -1;
 
@@ -137,13 +137,13 @@ void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map_p)
 		else
 			x_to_check = next_vert_touch_x;
 
-		if (map_has_wall_at(map_p, x_to_check, next_vert_touch_y))
+		if (map_has_wall_at(map, x_to_check, next_vert_touch_y))
 		{
 			vert_wall_hit_x = next_vert_touch_x;
 			vert_wall_hit_y = next_vert_touch_y;
-			next_vert_touch_y = floor(next_vert_touch_y / map_p->tile_size);
-			next_vert_touch_x = floor(next_vert_touch_x / map_p->tile_size);
-			vert_wall_content = map[(int)next_vert_touch_y][(int)next_vert_touch_x];
+			next_vert_touch_y = floor(next_vert_touch_y / map->tile_size);
+			next_vert_touch_x = floor(next_vert_touch_x / map->tile_size);
+			vert_wall_content = grid[(int)next_vert_touch_y][(int)next_vert_touch_x];
 			found_vert_wall_hit = true;
 			break;
 		}
@@ -195,7 +195,7 @@ void cast_all_rays(t_data *data)
 	strip_id = 0;
 	while (strip_id < NUM_RAYS)
 	{
-		cast_ray(ray_angle, &data->rays[strip_id], &data->player, &data->map_p);
+		cast_ray(ray_angle, &data->rays[strip_id], &data->player, &data->map);
 		ray_angle += FOV_ANGLE / NUM_RAYS;
 		strip_id++;
 	}

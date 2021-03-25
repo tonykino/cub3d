@@ -1,6 +1,6 @@
 #include "main.h"
 
-const int map[13][20] = { \
+const int grid[13][20] = { \
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
@@ -37,24 +37,57 @@ void	init_data(t_data *data)
 					);	
 }
 
-void render_map(uint32_t *color_buffer, t_map *map_p)
+void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_ray rays[NUM_RAYS])
+{
+	int x;
+	int y;
+	float distance_proj_plane;
+	float projected_wall_height;
+	int wall_top_pixel;
+	int wall_bottom_pixel;
+
+	x = 0;
+	while (x < NUM_RAYS)
+	{
+		distance_proj_plane = (WINDOW_WIDTH / 2) / tan(FOV_ANGLE / 2);
+		projected_wall_height = (map->tile_size / rays[x].distance) * distance_proj_plane;
+
+		wall_top_pixel = (WINDOW_HEIGHT / 2) - ((int)projected_wall_height / 2);
+		if (wall_top_pixel < 0)
+			wall_top_pixel = 0;
+
+		wall_bottom_pixel = wall_top_pixel + (int)projected_wall_height;
+		if (wall_bottom_pixel >= WINDOW_HEIGHT)
+			wall_bottom_pixel = WINDOW_HEIGHT - 1;
+
+		y = wall_top_pixel;
+		while (y < wall_bottom_pixel)
+		{
+			color_buffer_pixel_put(color_buffer, x, y, 0x00AAAAAA);
+			y++;
+		}
+		x++;
+	}
+}
+
+void	render_map(uint32_t *color_buffer, t_map *map)
 {
 	int i;
 	int j;
 	t_rect rect;
 
 	i = 0;
-	while (i < map_p->num_rows)
+	while (i < map->num_rows)
 	{
 		j = 0;
-		while (j < map_p->num_cols)
+		while (j < map->num_cols)
 		{
-			rect.x = j * map_p->tile_size * MINIMAP_SCALE_FACTOR;
-			rect.y = i * map_p->tile_size * MINIMAP_SCALE_FACTOR;
-			rect.width = map_p->tile_size * MINIMAP_SCALE_FACTOR;
-			rect.height = map_p->tile_size * MINIMAP_SCALE_FACTOR;
+			rect.x = j * map->tile_size * MINIMAP_SCALE_FACTOR;
+			rect.y = i * map->tile_size * MINIMAP_SCALE_FACTOR;
+			rect.width = map->tile_size * MINIMAP_SCALE_FACTOR;
+			rect.height = map->tile_size * MINIMAP_SCALE_FACTOR;
 
-			if (map[i][j] == 0)
+			if (grid[i][j] == 0)
 				rect.color = 0x00AAAAAA;
 			else
 				rect.color = 0x00123456;
@@ -107,7 +140,8 @@ void render_player(uint32_t *color_buffer, t_player *player)
 
 void render_scene(t_data *data)
 {
-	render_map(data->color_buffer, &data->map_p);
+	render_3D_projection(data->color_buffer, &data->map, data->rays);
+	render_map(data->color_buffer, &data->map);
 	render_rays(data->color_buffer, &data->player, data->rays);
 	render_player(data->color_buffer, &data->player);
 }
@@ -133,7 +167,7 @@ void move_player(t_player *player, t_map *map)
 
 void update_scene(t_data *data)
 {
-	move_player(&data->player, &data->map_p);
+	move_player(&data->player, &data->map);
 	cast_all_rays(data);
 }
 
@@ -167,17 +201,17 @@ void setup_player(t_player *player)
 	player->turn_speed = 2 * (M_PI / 180);
 }
 
-void setup_map(t_map *map_p)
+void setup_map(t_map *map)
 {
-	map_p->tile_size = 32;
-	map_p->num_rows = 13;
-	map_p->num_cols = 20;
+	map->tile_size = 32;
+	map->num_rows = 13;
+	map->num_cols = 20;
 }
 
 void setup(t_data *data)
 {
 	setup_player(&data->player);
-	setup_map(&data->map_p);
+	setup_map(&data->map);
 	data->color_buffer = (uint32_t*)ft_calloc(
 		(uint32_t)WINDOW_WIDTH * (uint32_t)WINDOW_HEIGHT,
 		sizeof(uint32_t)

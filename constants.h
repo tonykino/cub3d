@@ -14,7 +14,7 @@
 # define WINDOW_WIDTH 640 // 13 * 64
 # define WINDOW_HEIGHT 416 // 20 * 64
 
-# define MINIMAP_SCALE_FACTOR 0.5
+# define MINIMAP_SCALE_FACTOR 0.25
 
 # define FOV_ANGLE (60 * (M_PI / 180))
 
