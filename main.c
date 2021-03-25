@@ -1,43 +1,24 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <mlx.h>
-#include <math.h>
-#include <stdbool.h>
+#include "main.h"
 
-#define SCENE_WIDTH 640
-#define SCENE_HEIGHT 480
-
-#define SE 1
-#define NE 2
-#define NO 3
-#define SO 4
-
-typedef struct  s_img {
-    void	*mlx_img;
-    char	*addr;
-    int		bpp;
-    int		line_len;
-    int		endian;
-} t_img;
-
-typedef struct s_data
-{
-    void    *mlx_ptr;
-    void    *win_ptr;
-    t_img	img;
-} t_data;
-
-typedef struct s_rect {
-	int x;
-	int y;
-	int width;
-	int height;
-	int color;
-} t_rect;
+const int map[13][20] = { \
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1}, \
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1} \
+	};
 
 bool pixel_is_out_of_screen(t_img *img, int x, int y)
 {
-	if (x < 0 || x >= SCENE_WIDTH || y < 0 || y >= SCENE_HEIGHT)
+	if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)
 	{
 		return (true);
 	}
@@ -58,7 +39,7 @@ void	img_pixel_put(t_img *img, int x, int y, int color)
 }
 
 
-void	draw_rectangle(t_img *img, t_rect *rect)
+void	render_rectangle(t_img *img, t_rect *rect)
 {
 	int x;
 	int y;
@@ -83,33 +64,33 @@ int	key_hook(int keycode)
 		printf("Exit !\n");
 		exit(0);
 	}
-    printf("Tape on %d !\n", keycode);
+    printf("Tap on %d !\n", keycode);
 	return (0);
 }
 
 int mouse_hook(int button, int x, int y)
 {
-	printf("Click on %d : %d|%d\n", button, x, y);
+	printf("Click on %d : %d|%d !\n", button, x, y);
 	return (0);
 }
 
-void	init_data(t_data *mlx)
+void	init_data(t_data *data)
 {
-	mlx->mlx_ptr = mlx_init();
-	if (mlx->mlx_ptr == NULL)
+	data->mlx_ptr = mlx_init();
+	if (data->mlx_ptr == NULL)
 		return ;//(1);
-    mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, SCENE_WIDTH, SCENE_HEIGHT, "Test");
-	if (mlx->win_ptr == NULL)
+    data->win_ptr = mlx_new_window(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Test");
+	if (data->win_ptr == NULL)
 	{
-		free(mlx->win_ptr);
+		free(data->win_ptr);
 		return ;//(1);
 	}
-    mlx->img.mlx_img = mlx_new_image(mlx->mlx_ptr, SCENE_WIDTH, SCENE_HEIGHT);
-    mlx->img.addr = mlx_get_data_addr(
-						mlx->img.mlx_img, 
-						&mlx->img.bpp, 
-						&mlx->img.line_len, 
-						&mlx->img.endian
+    data->img.mlx_img = mlx_new_image(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
+    data->img.addr = mlx_get_data_addr(
+						data->img.mlx_img, 
+						&data->img.bpp, 
+						&data->img.line_len, 
+						&data->img.endian
 					);	
 }
 
@@ -119,10 +100,10 @@ void clear_img(t_img *img)
 	int y;
 
 	x = 0;
-	while (x < SCENE_WIDTH)
+	while (x < WINDOW_WIDTH)
 	{	
 		y = 0;
-		while (y < SCENE_HEIGHT)
+		while (y < WINDOW_HEIGHT)
 		{
 			img_pixel_put(img, x, y, 0x000000);
 			y++;
@@ -137,7 +118,7 @@ int	encode_rgb(uint8_t red, uint8_t green, uint8_t blue)
 	return (red << 16 | green << 8 | blue);
 }
 
-int calc_color(uint8_t red, uint8_t green, uint8_t blue)
+int get_next_rainbow_color(uint8_t red, uint8_t green, uint8_t blue)
 {
 	static int x = 0;
 	if(x>=0 && x<255){
@@ -176,92 +157,94 @@ int calc_color(uint8_t red, uint8_t green, uint8_t blue)
 	return (encode_rgb(red, green, blue));
 }
 
+void render_map(t_img *img, t_map *map_p)
+{
+	int i;
+	int j;
+	t_rect rect;
+
+	i = 0;
+	while (i < map_p->num_rows)
+	{
+		j = 0;
+		while (j < map_p->num_cols)
+		{
+			rect.x = j * map_p->tile_size;
+			rect.y = i * map_p->tile_size;
+			rect.width = map_p->tile_size;
+			rect.height = map_p->tile_size;
+
+			if (map[i][j] == 0)
+				rect.color = 0x00AAAAAA;
+			else
+				rect.color = 0x00123456;
+
+			render_rectangle(img, &rect);
+
+			j++;
+		}
+		i++;
+	}
+}
+
 int render(t_data *data)
 {
 	if (data->win_ptr == NULL)
 		return 1;
 	
+	// mlx_clear_window(data->mlx_ptr, data->win_ptr); // Useless ?
 	// clear_img(&data->img);
-	mlx_clear_window(data->mlx_ptr, data->win_ptr);
+
+	// t_rect rect = {40, 40, 40, 40, 0x00FFFF00 };
+	// render_rectangle(&data->img, &rect);
+
+	render_map(&data->img, &data->map_p);
+	// render_rays();
+	// render_player();
 	
-	static int dir = SE;
-	static uint8_t red = 255;
-	static uint8_t green = 0;
-	static uint8_t blue = 0;
-	static t_rect rect = {40, 40, 1, 1, 0x00FF0000};
-
-	// printf("color = %x\n", rect.color);
-	draw_rectangle(&data->img, &rect);
-	// rect.color = encode_rgb(red, green, blue);
-	rect.color = calc_color(red, green, blue);
-	// printf("color = %x\n", rect.color);
-
-	if (rect.y + rect.height > SCENE_HEIGHT)
-	{
-		if (dir == SE)
-			dir = NE;
-		else if (dir == SO)
-			dir = NO;
-	}
-	if (rect.y < 0 )
-	{
-		if (dir == NE)
-			dir = SE;
-		else if (dir == NO)
-			dir = SO;
-	}
-	if (rect.x + rect.width > SCENE_WIDTH)
-	{
-		if (dir == NE)
-			dir = NO;
-		else if (dir == SE)
-			dir = SO;
-	}
-	if (rect.x < 0)
-	{
-		if (dir == NO)
-			dir = NE;
-		else if (dir == SO)
-			dir = SE;
-	}
-
-	if (dir == SE)
-	{
-		rect.x += 1;
-		rect.y += 1;
-	}
-	else if (dir == NE)
-	{
-		rect.x += 1;
-		rect.y -= 1;
-	}
-	else if (dir == NO)
-	{
-		rect.x -= 1;
-		rect.y -= 1;
-	}
-	else if (dir == SO)
-	{
-		rect.x -= 1;
-		rect.y += 1;
-	}
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 	return 0;
 }
 
+void setup_player(t_player *player)
+{
+	player->x = WINDOW_WIDTH / 2;
+	player->y = WINDOW_HEIGHT / 2;
+	player->width = 5;
+	player->height = 5;
+	player->turn_direction = 0;
+	player->walk_direction = 0;
+	player->rotation_angle = M_PI_2;
+	player->walk_speed = 2;
+	player->turn_speed = 9 * (M_PI / 180);
+}
+
+void setup_map(t_map *map_p)
+{
+	map_p->tile_size = 32;
+	map_p->num_rows = 13;
+	map_p->num_cols = 20;
+}
+
+void setup(t_data *data)
+{
+	setup_player(&data->player);
+	setup_map(&data->map_p);
+}
+
 int             main(void)
 {
-	t_data mlx;
+	t_data data;
 
-	init_data(&mlx);
-    
-	mlx_loop_hook(mlx.mlx_ptr, &render, &mlx);
-	mlx_key_hook(mlx.win_ptr, key_hook, 0);
-	mlx_mouse_hook(mlx.win_ptr, mouse_hook, 0);
+	init_data(&data);
+    setup(&data);
+	mlx_loop_hook(data.mlx_ptr, &render, &data);
+	mlx_key_hook(data.win_ptr, key_hook, 0);
+	mlx_mouse_hook(data.win_ptr, mouse_hook, 0);
 
-    mlx_loop(mlx.mlx_ptr);
+    mlx_loop(data.mlx_ptr);
 
-	mlx_destroy_image(mlx.mlx_ptr, mlx.img.mlx_img);
+	mlx_destroy_image(data.mlx_ptr, data.img.mlx_img);
 
 	return(0);
 }
