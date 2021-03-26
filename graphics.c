@@ -59,6 +59,8 @@ void copy_color_buffer_in_image(t_img *img)
 // color_buffer related functions
 void	draw_pixel(int x, int y, uint32_t color)
 {
+	if (pixel_is_out_of_screen(x, y))
+		return ;
 	color_buffer[y * WINDOW_WIDTH + x] = color;
 }
 

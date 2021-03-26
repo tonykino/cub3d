@@ -158,9 +158,9 @@ void render_player(t_player *player)
 void render_scene(t_data *data)
 {
 	render_3D_projection(data);
-	// render_map(data->color_buffer, &data->map);
-	// render_rays(data->color_buffer, &data->player, data->rays);
-	// render_player(data->color_buffer, &data->player);
+	render_map(&data->map);
+	render_rays(&data->player, data->rays);
+	render_player(&data->player);
 
 	copy_color_buffer_in_image(&data->img);
     mlx_put_image_to_window(get_mlx_ptr(), get_win_ptr(), data->img.mlx_img, 0, 0);
@@ -216,13 +216,13 @@ void setup_player(t_player *player, t_map *map)
 	player->turn_direction = 0;
 	player->walk_direction = 0;
 	player->rotation_angle = M_PI_2;
-	player->walk_speed = (float)map->tile_size / 32;
+	player->walk_speed = 2 * (float)map->tile_size / 32;
 	player->turn_speed = 2 * (M_PI / 180);
 }
 
 void setup_map(t_map *map)
 {
-	map->tile_size = 1024;
+	map->tile_size = 128;
 	map->num_rows = 13;
 	map->num_cols = 20;
 }
