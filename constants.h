@@ -1,9 +1,7 @@
 #ifndef CONSTANTS_H
 # define CONSTANTS_H
 
-// #define TILE_SIZE 64
-// #define MAP_NUM_ROWS 13
-// #define MAP_NUM_COLS 20
+# include <math.h>
 
 # define ESC_KEY_SYM 53
 # define ARROW_LEFT_KEY_SYM 123
@@ -17,8 +15,8 @@
 # define MINIMAP_SCALE_FACTOR 0.25
 
 # define FOV_ANGLE (60 * (M_PI / 180))
-
 # define NUM_RAYS WINDOW_WIDTH
+# define DIST_PROJ_PLANE ((WINDOW_WIDTH / 2) / tan(FOV_ANGLE / 2))
 
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64

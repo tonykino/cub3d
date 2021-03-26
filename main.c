@@ -59,7 +59,6 @@ void	render_3D_projection(t_data *data)
 	t_img *texture;
 	int x;
 	int y;
-	float distance_proj_plane;
 	float projected_wall_height;
 	float corrected_distance;
 	int wall_top_pixel;
@@ -70,8 +69,7 @@ void	render_3D_projection(t_data *data)
 	while (x < NUM_RAYS)
 	{
 		corrected_distance = rays[x].distance * cos(rays[x].ray_angle - player->rotation_angle);
-		distance_proj_plane = (WINDOW_WIDTH / 2) / tan(FOV_ANGLE / 2);
-		projected_wall_height = (map->tile_size / corrected_distance) * distance_proj_plane;
+		projected_wall_height = (map->tile_size / corrected_distance) * DIST_PROJ_PLANE;
 
 		wall_top_pixel = (WINDOW_HEIGHT / 2) - ((int)projected_wall_height / 2);
 		if (wall_top_pixel < 0)
@@ -306,13 +304,6 @@ void setup(t_data *data)
 	data->textures[2].path = "./textures/musee_3.xpm";
 	data->textures[3].path = "./textures/musee_4.xpm";
 	i = 0;
-		// data->textures[0].mlx_img =  mlx_xpm_file_to_image (data->mlx_ptr, data->textures[0].path, &wh, &wh);
-		// data->textures[0].addr = mlx_get_data_addr(
-		// 					data->textures[0].mlx_img, 
-		// 					&data->textures[0].bpp, 
-		// 					&data->textures[0].line_len, 
-		// 					&data->textures[0].endian
-		// 				);	
 	while (i < 4)
 	{
 		data->textures[i].mlx_img =  mlx_xpm_file_to_image (data->mlx_ptr, data->textures[i].path, &wh, &wh);

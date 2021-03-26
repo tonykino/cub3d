@@ -189,14 +189,13 @@ void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map)
 void cast_all_rays(t_data *data)
 {
 	float ray_angle;
-	int strip_id;
+	int col;
 
-	ray_angle = data->player.rotation_angle - (FOV_ANGLE / 2);
-	strip_id = 0;
-	while (strip_id < NUM_RAYS)
+	col = 0;
+	while (col < NUM_RAYS)
 	{
-		cast_ray(ray_angle, &data->rays[strip_id], &data->player, &data->map);
-		ray_angle += FOV_ANGLE / NUM_RAYS;
-		strip_id++;
+		ray_angle = data->player.rotation_angle + atan((col - NUM_RAYS / 2) / DIST_PROJ_PLANE);
+		cast_ray(ray_angle, &data->rays[col], &data->player, &data->map);
+		col++;
 	}
 }
