@@ -6,7 +6,7 @@ bool map_has_wall_at(t_map *map, float x, float y)
 	int map_x_index;
 	int map_y_index;
 
-	if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)
+	if (x < 0 || x >= map->num_cols * map->tile_size || y < 0 || y >= map->num_rows * map->tile_size)
 		return (true);
 	map_x_index = floor(x / map->tile_size);
 	map_y_index = floor(y / map->tile_size);
@@ -76,7 +76,7 @@ void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map)
 	next_horz_touch_x = xintercept;
 	next_horz_touch_y = yintercept;
 
-	while(next_horz_touch_x >= 0 && next_horz_touch_x < WINDOW_WIDTH && next_horz_touch_y >= 0 && next_horz_touch_y < WINDOW_HEIGHT)
+	while(next_horz_touch_x >= 0 && (next_horz_touch_x < map->num_cols * map->tile_size) && next_horz_touch_y >= 0 && (next_horz_touch_y < map->num_rows * map->tile_size))
 	{
 		float y_to_check;
 
@@ -128,7 +128,7 @@ void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map)
 	next_vert_touch_x = xintercept;
 	next_vert_touch_y = yintercept;
 
-	while(next_vert_touch_x >= 0 && next_vert_touch_x < WINDOW_WIDTH && next_vert_touch_y >= 0 && next_vert_touch_y < WINDOW_HEIGHT)
+	while(next_vert_touch_x >= 0 && (next_vert_touch_x < map->num_cols * map->tile_size) && next_vert_touch_y >= 0 && (next_vert_touch_y < map->num_rows * map->tile_size))
 	{
 		float x_to_check;
 		

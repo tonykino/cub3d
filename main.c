@@ -241,10 +241,10 @@ int update_and_render(t_data *data)
 	return 0;
 }
 
-void setup_player(t_player *player)
+void setup_player(t_player *player, t_map *map)
 {
-	player->x = WINDOW_WIDTH / 2;
-	player->y = WINDOW_HEIGHT / 2;
+	player->x = map->num_cols * map->tile_size / 2;
+	player->y = map->num_rows * map->tile_size / 2;
 	player->width = 12;
 	player->height = 12;
 	player->turn_direction = 0;
@@ -256,7 +256,7 @@ void setup_player(t_player *player)
 
 void setup_map(t_map *map)
 {
-	map->tile_size = 32;
+	map->tile_size = 64;
 	map->num_rows = 13;
 	map->num_cols = 20;
 }
@@ -286,8 +286,8 @@ void setup_texture(uint32_t *texture)
 
 void setup(t_data *data)
 {
-	setup_player(&data->player);
 	setup_map(&data->map);
+	setup_player(&data->player, &data->map);
 	data->color_buffer = (uint32_t*)ft_calloc(
 		(uint32_t)WINDOW_WIDTH * (uint32_t)WINDOW_HEIGHT,
 		sizeof(uint32_t)

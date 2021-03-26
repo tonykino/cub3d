@@ -9,8 +9,8 @@
 # define ARROW_DOWN_KEY_SYM 125
 # define ARROW_UP_KEY_SYM 126
 
-# define WINDOW_WIDTH 640 // 13 * 64
-# define WINDOW_HEIGHT 416 // 20 * 64
+# define WINDOW_WIDTH 960
+# define WINDOW_HEIGHT 640
 
 # define MINIMAP_SCALE_FACTOR 0.25
 
