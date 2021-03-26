@@ -18,7 +18,7 @@ uint32_t get_texel_color(t_img *texture, int x, int y)
 	return (pix_color);
 }
 
-void load_textures(t_img *textures, t_data *data)
+void load_textures(t_img *textures)
 {
 	int wh = 1024; // TODO : get this param from xpm files...
 	int i;
@@ -27,14 +27,14 @@ void load_textures(t_img *textures, t_data *data)
 	{
 		textures[i].path = texture_filenames[i];
 		textures[i].mlx_img = mlx_xpm_file_to_image(
-			data->mlx_ptr, 
+			get_mlx_ptr(), 
 			textures[i].path, 
 			&wh, 
 			&wh
 		);
 		textures[i].addr = mlx_get_data_addr(
 							textures[i].mlx_img, 
-							&textures[i].bpp, 
+							&textures[i].bpp,
 							&textures[i].line_len, 
 							&textures[i].endian
 						);

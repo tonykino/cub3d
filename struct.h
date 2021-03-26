@@ -66,9 +66,6 @@ typedef struct s_ray {
 
 typedef struct s_data
 {
-    void    	*mlx_ptr;
-    void    	*win_ptr;
-	uint32_t	*color_buffer;
 	t_img		textures[4];
     t_img		img;
 	t_map 		map;

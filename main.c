@@ -16,29 +16,8 @@ const int	grid[13][20] = { \
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1} \
 	};
 
-void	init_data(t_data *data)
-{
-	data->mlx_ptr = mlx_init();
-	if (data->mlx_ptr == NULL)
-		return ;//(1);
-    data->win_ptr = mlx_new_window(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Test");
-	if (data->win_ptr == NULL)
-	{
-		free(data->win_ptr);
-		return ;//(1);
-	}
-    data->img.mlx_img = mlx_new_image(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
-    data->img.addr = mlx_get_data_addr(
-						data->img.mlx_img, 
-						&data->img.bpp, 
-						&data->img.line_len, 
-						&data->img.endian
-					);	
-}
-
 void	render_3D_projection(t_data *data)
 {
-	uint32_t *color_buffer = data->color_buffer;
 	t_map *map = &data->map;
 	t_player *player = &data->player;
 	t_ray *rays = data->rays;
@@ -102,14 +81,14 @@ void	render_3D_projection(t_data *data)
 			{
 				color = 0x008B5A2B;
 			}
-			color_buffer_pixel_put(color_buffer, x, y, color);
+			draw_pixel(x, y, color);
 			y++;
 		}
 		x++;
 	}
 }
 
-void	render_map(uint32_t *color_buffer, t_map *map)
+void	render_map(t_map *map)
 {
 	int i;
 	int j;
@@ -131,14 +110,14 @@ void	render_map(uint32_t *color_buffer, t_map *map)
 			else
 				rect.color = 0x00123456;
 
-			render_rectangle(color_buffer, &rect);
+			draw_rectangle(&rect);
 			j++;
 		}
 		i++;
 	}
 }
 
-void render_rays(uint32_t *color_buffer, t_player *player, t_ray rays[NUM_RAYS])
+void render_rays(t_player *player, t_ray rays[NUM_RAYS])
 {
 	int i;
 	t_line line;
@@ -151,12 +130,12 @@ void render_rays(uint32_t *color_buffer, t_player *player, t_ray rays[NUM_RAYS])
 		line.x1 = rays[i].wall_hit_x * MINIMAP_SCALE_FACTOR;
 		line.y1 = rays[i].wall_hit_y * MINIMAP_SCALE_FACTOR;
 		line.color = 0x00FF0000;
-		render_line(color_buffer, &line);
+		draw_line(&line);
 		i++;
 	}
 }
 
-void render_player(uint32_t *color_buffer, t_player *player)
+void render_player(t_player *player)
 {
 	t_rect player_rect;
 	t_line player_line;
@@ -166,14 +145,14 @@ void render_player(uint32_t *color_buffer, t_player *player)
 	player_rect.width = player->width * MINIMAP_SCALE_FACTOR;
 	player_rect.height = player->height * MINIMAP_SCALE_FACTOR;
 	player_rect.color = 0x00FFFF00;
-	render_rectangle(color_buffer, &player_rect);
+	draw_rectangle(&player_rect);
 
 	player_line.x0 = player->x * MINIMAP_SCALE_FACTOR;
 	player_line.y0 = player->y * MINIMAP_SCALE_FACTOR;
 	player_line.x1 = (player->x + cos(player->rotation_angle) * 40) * MINIMAP_SCALE_FACTOR;
 	player_line.y1 = (player->y + sin(player->rotation_angle) * 40) * MINIMAP_SCALE_FACTOR;
 	player_line.color = 0x00FFFF00;
-	render_line(color_buffer, &player_line);
+	draw_line(&player_line);
 }
 
 void render_scene(t_data *data)
@@ -182,6 +161,9 @@ void render_scene(t_data *data)
 	// render_map(data->color_buffer, &data->map);
 	// render_rays(data->color_buffer, &data->player, data->rays);
 	// render_player(data->color_buffer, &data->player);
+
+	copy_color_buffer_in_image(&data->img);
+    mlx_put_image_to_window(get_mlx_ptr(), get_win_ptr(), data->img.mlx_img, 0, 0);
 }
 
 void move_player(t_player *player, t_map *map)
@@ -211,18 +193,17 @@ void update_scene(t_data *data)
 
 int update_and_render(t_data *data)
 {
-	if (data->win_ptr == NULL)
+	if (no_window())
 		return 1;
 	
-	mlx_clear_window(data->mlx_ptr, data->win_ptr); // Useless ?
+	// mlx_clear_window(data->mlx_ptr, data->win_ptr); // Useless ?
 	// clear_img(&data->img);
-	clear_color_buffer(data->color_buffer, 0x0000FFFF);
+	clear_color_buffer(0x00FFFFFF);
 
 	update_scene(data);
 	render_scene(data);
 	
-	copy_color_buffer_in_image(data->color_buffer, &data->img);
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
+	
 	return 0;
 }
 
@@ -250,12 +231,7 @@ void setup(t_data *data)
 {
 	setup_map(&data->map);
 	setup_player(&data->player, &data->map);
-	data->color_buffer = (uint32_t*)ft_calloc(
-		(uint32_t)WINDOW_WIDTH * (uint32_t)WINDOW_HEIGHT,
-		sizeof(uint32_t)
-	);
-
-	load_textures(data->textures, data);
+	load_textures(data->textures);
 }
 
 int	main(void)
@@ -264,14 +240,13 @@ int	main(void)
 
 	init_data(&data);
     setup(&data);
-	mlx_loop_hook(data.mlx_ptr, &update_and_render, &data);
-	mlx_mouse_hook(data.win_ptr, mouse_hook, 0);
-	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
-	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
-    mlx_loop(data.mlx_ptr);
+	mlx_mouse_hook(get_win_ptr(), mouse_hook, 0);
+	mlx_hook(get_win_ptr(), KeyPress, KeyPressMask, &handle_keypress, &data);
+	mlx_hook(get_win_ptr(), KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
+	mlx_loop_hook(get_mlx_ptr(), &update_and_render, &data);
+    mlx_loop(get_mlx_ptr());
 
-	free(data.color_buffer);
-	mlx_destroy_image(data.mlx_ptr, data.img.mlx_img);
+	mlx_destroy_image(get_mlx_ptr(), data.img.mlx_img);
 
 	return(0);
 }

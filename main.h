@@ -5,10 +5,10 @@
 #include <math.h>
 #include <stdbool.h>
 
-#include "libft.h"
 #include "constants.h"
-#include "struct.h"
+#include "graphics.h"
 #include "hook.h"
-#include "render.h"
+#include "libft.h"
 #include "raycaster.h"
+#include "struct.h"
 #include "texture.h"
