@@ -49,9 +49,14 @@ uint32_t get_xpm_texel_color(t_img *texture, int x, int y)
 	return (pix_color);
 }
 
-void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, t_ray rays[NUM_RAYS], t_img *texture)
+void	render_3D_projection(t_data *data)
 // void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, t_ray rays[NUM_RAYS], uint32_t *wall_texture)
 {
+	uint32_t *color_buffer = data->color_buffer;
+	t_map *map = &data->map;
+	t_player *player = &data->player;
+	t_ray *rays = data->rays;
+	t_img *texture;
 	int x;
 	int y;
 	float distance_proj_plane;
@@ -78,9 +83,21 @@ void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, 
 
 		int texture_offset_x;
 		if (rays[x].was_hit_vertical)
+		{
 			texture_offset_x = (int)rays[x].wall_hit_y % map->tile_size;
+			if (rays[x].is_facing_right)
+				texture = &data->textures[0];
+			else
+				texture = &data->textures[1];
+		}
 		else
+		{
 			texture_offset_x = (int)rays[x].wall_hit_x % map->tile_size;
+			if (rays[x].is_facing_up)
+				texture = &data->textures[2];
+			else
+				texture = &data->textures[3];
+		}
 		texture_offset_x *= TEXTURE_WIDTH / map->tile_size;
 
 		y = 0;
@@ -178,7 +195,7 @@ void render_player(uint32_t *color_buffer, t_player *player)
 
 void render_scene(t_data *data)
 {
-	render_3D_projection(data->color_buffer, &data->map, &data->player, data->rays, &data->texture_img);
+	render_3D_projection(data);
 	render_map(data->color_buffer, &data->map);
 	render_rays(data->color_buffer, &data->player, data->rays);
 	render_player(data->color_buffer, &data->player);
@@ -283,15 +300,30 @@ void setup(t_data *data)
 	);
 	setup_texture(data->wall_texture);
 	int wh = 64;
-	data->texture_img.mlx_img =  mlx_xpm_file_to_image (data->mlx_ptr, "./textures/musee-1.xpm", &wh, &wh);
-	printf("ptr is '%p'\n", data->texture_img.mlx_img);
-	data->texture_img.addr = mlx_get_data_addr(
-						data->texture_img.mlx_img, 
-						&data->texture_img.bpp, 
-						&data->texture_img.line_len, 
-						&data->texture_img.endian
-					);	
-	printf("bpp=%d, line_len=%d\n", data->texture_img.bpp, data->texture_img.line_len);
+	int i;
+	data->textures[0].path = "./textures/musee_1.xpm";
+	data->textures[1].path = "./textures/musee_2.xpm";
+	data->textures[2].path = "./textures/musee_3.xpm";
+	data->textures[3].path = "./textures/musee_4.xpm";
+	i = 0;
+		// data->textures[0].mlx_img =  mlx_xpm_file_to_image (data->mlx_ptr, data->textures[0].path, &wh, &wh);
+		// data->textures[0].addr = mlx_get_data_addr(
+		// 					data->textures[0].mlx_img, 
+		// 					&data->textures[0].bpp, 
+		// 					&data->textures[0].line_len, 
+		// 					&data->textures[0].endian
+		// 				);	
+	while (i < 4)
+	{
+		data->textures[i].mlx_img =  mlx_xpm_file_to_image (data->mlx_ptr, data->textures[i].path, &wh, &wh);
+		data->textures[i].addr = mlx_get_data_addr(
+							data->textures[i].mlx_img, 
+							&data->textures[i].bpp, 
+							&data->textures[i].line_len, 
+							&data->textures[i].endian
+						);	
+		i++;
+	}
 }
 
 int	main(void)
