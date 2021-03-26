@@ -11,3 +11,4 @@
 #include "hook.h"
 #include "render.h"
 #include "raycaster.h"
+#include "texture.h"

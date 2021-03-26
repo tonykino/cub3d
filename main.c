@@ -1,6 +1,6 @@
 #include "main.h"
 
-const int grid[13][20] = { \
+const int	grid[13][20] = { \
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
@@ -15,7 +15,6 @@ const int grid[13][20] = { \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1} \
 	};
-
 
 void	init_data(t_data *data)
 {
@@ -35,16 +34,6 @@ void	init_data(t_data *data)
 						&data->img.line_len, 
 						&data->img.endian
 					);	
-}
-
-uint32_t get_xpm_texel_color(t_img *texture, int x, int y)
-{
-	char *pix_addr;
-	uint32_t pix_color;
-	
-	pix_addr = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
-	pix_color = *(uint32_t*)pix_addr;
-	return (pix_color);
 }
 
 void	render_3D_projection(t_data *data)
@@ -107,7 +96,7 @@ void	render_3D_projection(t_data *data)
 			else if (y < wall_bottom_pixel)
 			{
 				texture_offset_y = (int)((float)(y - (WINDOW_HEIGHT / 2) + ((int)projected_wall_height / 2)) * texture->height / projected_wall_height);
-				color = get_xpm_texel_color(texture, texture_offset_x, texture_offset_y);
+				color = get_texel_color(texture, texture_offset_x, texture_offset_y);
 			}
 			else 
 			{
@@ -265,26 +254,8 @@ void setup(t_data *data)
 		(uint32_t)WINDOW_WIDTH * (uint32_t)WINDOW_HEIGHT,
 		sizeof(uint32_t)
 	);
-	int wh = 1024; // TODO : get this param from xpm files...
-	int i;
-	data->textures[0].path = "./textures/HD/Epic-Soul.xpm";
-	data->textures[1].path = "./textures/HD/Troop_Leviathan.xpm";
-	data->textures[2].path = "./textures/HD/dragon.xpm";
-	data->textures[3].path = "./textures/HD/peeper.xpm";
-	i = 0;
-	while (i < 4)
-	{
-		data->textures[i].mlx_img =  mlx_xpm_file_to_image (data->mlx_ptr, data->textures[i].path, &wh, &wh);
-		data->textures[i].addr = mlx_get_data_addr(
-							data->textures[i].mlx_img, 
-							&data->textures[i].bpp, 
-							&data->textures[i].line_len, 
-							&data->textures[i].endian
-						);
-		data->textures[i].width = data->textures[i].line_len * 8 / data->textures[i].bpp;
-		data->textures[i].height = data->textures[i].width;
-		i++;
-	}
+
+	load_textures(data->textures, data);
 }
 
 int	main(void)
