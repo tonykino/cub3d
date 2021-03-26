@@ -37,7 +37,7 @@ void	init_data(t_data *data)
 					);	
 }
 
-void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, t_ray rays[NUM_RAYS])
+void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, t_ray rays[NUM_RAYS], uint32_t *wall_texture)
 {
 	int x;
 	int y;
@@ -63,17 +63,30 @@ void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, 
 		if (wall_bottom_pixel >= WINDOW_HEIGHT)
 			wall_bottom_pixel = WINDOW_HEIGHT - 1;
 
+		int texture_offset_x;
+		if (rays[x].was_hit_vertical)
+			texture_offset_x = (int)rays[x].wall_hit_y % map->tile_size;
+		else
+			texture_offset_x = (int)rays[x].wall_hit_x % map->tile_size;
+
 		y = 0;
 		while (y < WINDOW_HEIGHT)
 		{
+			int texture_offset_y;
+
 			if (y < wall_top_pixel)
+			{
 				color = 0x0087CEEB;
-			else if (y < wall_bottom_pixel && rays[x].was_hit_vertical)
-				color = 0x00AAAAAA;
+			}
 			else if (y < wall_bottom_pixel)
-				color = 0x00CCCCCC;
+			{
+				texture_offset_y = (int)((float)(y - (WINDOW_HEIGHT / 2) + ((int)projected_wall_height / 2)) * TEXTURE_HEIGHT / projected_wall_height);
+				color = get_texel_color(wall_texture, texture_offset_x, texture_offset_y);
+			}
 			else 
+			{
 				color = 0x008B5A2B;
+			}
 			color_buffer_pixel_put(color_buffer, x, y, color);
 			y++;
 		}
@@ -150,7 +163,7 @@ void render_player(uint32_t *color_buffer, t_player *player)
 
 void render_scene(t_data *data)
 {
-	render_3D_projection(data->color_buffer, &data->map, &data->player, data->rays);
+	render_3D_projection(data->color_buffer, &data->map, &data->player, data->rays, data->wall_texture);
 	render_map(data->color_buffer, &data->map);
 	render_rays(data->color_buffer, &data->player, data->rays);
 	render_player(data->color_buffer, &data->player);
@@ -218,6 +231,29 @@ void setup_map(t_map *map)
 	map->num_cols = 20;
 }
 
+void setup_texture(uint32_t *texture)
+{
+	int x;
+	int y;
+	int color;
+
+	x = 0;
+	while (x < TEXTURE_WIDTH)
+	{
+		y = 0;
+		while (y < TEXTURE_HEIGHT)
+		{
+			if (x % 8 && y % 8)
+				color = 0x000000FF;
+			else
+				color = 0x00000000;
+			texel_put(texture, x, y, color);
+			y++;
+		}
+		x++;
+	}
+}
+
 void setup(t_data *data)
 {
 	setup_player(&data->player);
@@ -226,9 +262,14 @@ void setup(t_data *data)
 		(uint32_t)WINDOW_WIDTH * (uint32_t)WINDOW_HEIGHT,
 		sizeof(uint32_t)
 	);
+	data->wall_texture = (uint32_t*)ft_calloc(
+		(uint32_t)TEXTURE_WIDTH * (uint32_t)WINDOW_HEIGHT,
+		sizeof(uint32_t)
+	);
+	setup_texture(data->wall_texture);
 }
 
-int             main(void)
+int	main(void)
 {
 	t_data data;
 
@@ -247,4 +288,4 @@ int             main(void)
 }
 
 // Pour tester le code :
-// gcc -Llibmlx -Ilibmlx -lmlx -framework OpenGL -framework AppKit main.c && ./a.out
+// gcc -Wall -Werror -Wextra -Llibmlx -Ilibmlx -lmlx -framework OpenGL -framework AppKit main.c && ./a.out

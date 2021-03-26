@@ -45,6 +45,16 @@ void	color_buffer_pixel_put(uint32_t *color_buffer, int x, int y, uint32_t color
 	color_buffer[y * WINDOW_WIDTH + x] = color;
 }
 
+void	texel_put(uint32_t *texture, int x, int y, uint32_t color)
+{
+	texture[y * TEXTURE_WIDTH + x] = color;
+}
+
+uint32_t get_texel_color(uint32_t *texture, int x, int y)
+{
+	return (texture[y * TEXTURE_WIDTH + x]);
+}
+
 void	clear_color_buffer(uint32_t *color_buffer, uint32_t color)
 {
 	int i;

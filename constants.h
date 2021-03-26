@@ -20,10 +20,12 @@
 
 # define NUM_RAYS WINDOW_WIDTH
 
+# define TEXTURE_WIDTH 64
+# define TEXTURE_HEIGHT 64
 
-#define KeyPressMask	(1L<<0)
-#define KeyReleaseMask	(1L<<1)
-#define KeyPress		2
-#define KeyRelease		3
+# define KeyPressMask	(1L<<0)
+# define KeyReleaseMask	(1L<<1)
+# define KeyPress		2
+# define KeyRelease		3
 
 #endif

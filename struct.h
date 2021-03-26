@@ -66,6 +66,7 @@ typedef struct s_data
     void    	*mlx_ptr;
     void    	*win_ptr;
 	uint32_t	*color_buffer;
+	uint32_t	*wall_texture;
     t_img		img;
 	t_map 		map;
 	t_player	player;
