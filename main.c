@@ -37,7 +37,20 @@ void	init_data(t_data *data)
 					);	
 }
 
-void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, t_ray rays[NUM_RAYS], uint32_t *wall_texture)
+uint32_t get_xpm_texel_color(t_img *texture, int x, int y)
+{
+	char *pix_addr;
+	uint32_t pix_color;
+	
+	pix_addr = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
+	pix_color = *(uint32_t*)pix_addr;
+			
+	// printf("addr=%p, color=%x\n", pix_addr, pix_color);
+	return (pix_color);
+}
+
+void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, t_ray rays[NUM_RAYS], t_img *texture)
+// void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, t_ray rays[NUM_RAYS], uint32_t *wall_texture)
 {
 	int x;
 	int y;
@@ -68,6 +81,7 @@ void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, 
 			texture_offset_x = (int)rays[x].wall_hit_y % map->tile_size;
 		else
 			texture_offset_x = (int)rays[x].wall_hit_x % map->tile_size;
+		texture_offset_x *= TEXTURE_WIDTH / map->tile_size;
 
 		y = 0;
 		while (y < WINDOW_HEIGHT)
@@ -81,7 +95,8 @@ void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, 
 			else if (y < wall_bottom_pixel)
 			{
 				texture_offset_y = (int)((float)(y - (WINDOW_HEIGHT / 2) + ((int)projected_wall_height / 2)) * TEXTURE_HEIGHT / projected_wall_height);
-				color = get_texel_color(wall_texture, texture_offset_x, texture_offset_y);
+				// color = get_texel_color(wall_texture, texture_offset_x, texture_offset_y);
+				color = get_xpm_texel_color(texture, texture_offset_x, texture_offset_y);
 			}
 			else 
 			{
@@ -163,7 +178,7 @@ void render_player(uint32_t *color_buffer, t_player *player)
 
 void render_scene(t_data *data)
 {
-	render_3D_projection(data->color_buffer, &data->map, &data->player, data->rays, data->wall_texture);
+	render_3D_projection(data->color_buffer, &data->map, &data->player, data->rays, &data->texture_img);
 	render_map(data->color_buffer, &data->map);
 	render_rays(data->color_buffer, &data->player, data->rays);
 	render_player(data->color_buffer, &data->player);
@@ -267,6 +282,16 @@ void setup(t_data *data)
 		sizeof(uint32_t)
 	);
 	setup_texture(data->wall_texture);
+	int wh = 64;
+	data->texture_img.mlx_img =  mlx_xpm_file_to_image (data->mlx_ptr, "./textures/musee-1.xpm", &wh, &wh);
+	printf("ptr is '%p'\n", data->texture_img.mlx_img);
+	data->texture_img.addr = mlx_get_data_addr(
+						data->texture_img.mlx_img, 
+						&data->texture_img.bpp, 
+						&data->texture_img.line_len, 
+						&data->texture_img.endian
+					);	
+	printf("bpp=%d, line_len=%d\n", data->texture_img.bpp, data->texture_img.line_len);
 }
 
 int	main(void)
