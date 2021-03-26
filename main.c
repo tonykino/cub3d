@@ -190,9 +190,9 @@ void render_player(uint32_t *color_buffer, t_player *player)
 void render_scene(t_data *data)
 {
 	render_3D_projection(data);
-	render_map(data->color_buffer, &data->map);
-	render_rays(data->color_buffer, &data->player, data->rays);
-	render_player(data->color_buffer, &data->player);
+	// render_map(data->color_buffer, &data->map);
+	// render_rays(data->color_buffer, &data->player, data->rays);
+	// render_player(data->color_buffer, &data->player);
 }
 
 void move_player(t_player *player, t_map *map)
@@ -252,7 +252,7 @@ void setup_player(t_player *player, t_map *map)
 
 void setup_map(t_map *map)
 {
-	map->tile_size = 128;
+	map->tile_size = 1024;
 	map->num_rows = 13;
 	map->num_cols = 20;
 }
@@ -265,12 +265,12 @@ void setup(t_data *data)
 		(uint32_t)WINDOW_WIDTH * (uint32_t)WINDOW_HEIGHT,
 		sizeof(uint32_t)
 	);
-	int wh = 128; // TODO : get this param from xpm files...
+	int wh = 1024; // TODO : get this param from xpm files...
 	int i;
-	data->textures[0].path = "./textures/musee_1.xpm";
-	data->textures[1].path = "./textures/musee_2.xpm";
-	data->textures[2].path = "./textures/musee_3.xpm";
-	data->textures[3].path = "./textures/sub1.xpm";
+	data->textures[0].path = "./textures/HD/Epic-Soul.xpm";
+	data->textures[1].path = "./textures/HD/Troop_Leviathan.xpm";
+	data->textures[2].path = "./textures/HD/dragon.xpm";
+	data->textures[3].path = "./textures/HD/peeper.xpm";
 	i = 0;
 	while (i < 4)
 	{
