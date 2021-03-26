@@ -12,6 +12,8 @@ typedef struct  s_img {
     int		bpp;
     int		line_len;
     int		endian;
+	int 	width;
+	int 	height;
 }	t_img;
 
 
@@ -67,7 +69,6 @@ typedef struct s_data
     void    	*mlx_ptr;
     void    	*win_ptr;
 	uint32_t	*color_buffer;
-	uint32_t	*wall_texture;
 	t_img		textures[4];
     t_img		img;
 	t_map 		map;

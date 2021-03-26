@@ -44,13 +44,10 @@ uint32_t get_xpm_texel_color(t_img *texture, int x, int y)
 	
 	pix_addr = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
 	pix_color = *(uint32_t*)pix_addr;
-			
-	// printf("addr=%p, color=%x\n", pix_addr, pix_color);
 	return (pix_color);
 }
 
 void	render_3D_projection(t_data *data)
-// void	render_3D_projection(uint32_t *color_buffer, t_map *map, t_player *player, t_ray rays[NUM_RAYS], uint32_t *wall_texture)
 {
 	uint32_t *color_buffer = data->color_buffer;
 	t_map *map = &data->map;
@@ -96,7 +93,7 @@ void	render_3D_projection(t_data *data)
 			else
 				texture = &data->textures[3];
 		}
-		texture_offset_x *= TEXTURE_WIDTH / map->tile_size;
+		texture_offset_x *= (float)texture->width / map->tile_size;
 
 		y = 0;
 		while (y < WINDOW_HEIGHT)
@@ -109,8 +106,7 @@ void	render_3D_projection(t_data *data)
 			}
 			else if (y < wall_bottom_pixel)
 			{
-				texture_offset_y = (int)((float)(y - (WINDOW_HEIGHT / 2) + ((int)projected_wall_height / 2)) * TEXTURE_HEIGHT / projected_wall_height);
-				// color = get_texel_color(wall_texture, texture_offset_x, texture_offset_y);
+				texture_offset_y = (int)((float)(y - (WINDOW_HEIGHT / 2) + ((int)projected_wall_height / 2)) * texture->height / projected_wall_height);
 				color = get_xpm_texel_color(texture, texture_offset_x, texture_offset_y);
 			}
 			else 
@@ -250,38 +246,15 @@ void setup_player(t_player *player, t_map *map)
 	player->turn_direction = 0;
 	player->walk_direction = 0;
 	player->rotation_angle = M_PI_2;
-	player->walk_speed = 1;
+	player->walk_speed = (float)map->tile_size / 32;
 	player->turn_speed = 2 * (M_PI / 180);
 }
 
 void setup_map(t_map *map)
 {
-	map->tile_size = 64;
+	map->tile_size = 128;
 	map->num_rows = 13;
 	map->num_cols = 20;
-}
-
-void setup_texture(uint32_t *texture)
-{
-	int x;
-	int y;
-	int color;
-
-	x = 0;
-	while (x < TEXTURE_WIDTH)
-	{
-		y = 0;
-		while (y < TEXTURE_HEIGHT)
-		{
-			if (x % 8 && y % 8)
-				color = 0x000000FF;
-			else
-				color = 0x00000000;
-			texel_put(texture, x, y, color);
-			y++;
-		}
-		x++;
-	}
 }
 
 void setup(t_data *data)
@@ -292,17 +265,12 @@ void setup(t_data *data)
 		(uint32_t)WINDOW_WIDTH * (uint32_t)WINDOW_HEIGHT,
 		sizeof(uint32_t)
 	);
-	data->wall_texture = (uint32_t*)ft_calloc(
-		(uint32_t)TEXTURE_WIDTH * (uint32_t)WINDOW_HEIGHT,
-		sizeof(uint32_t)
-	);
-	setup_texture(data->wall_texture);
-	int wh = 64;
+	int wh = 128; // TODO : get this param from xpm files...
 	int i;
 	data->textures[0].path = "./textures/musee_1.xpm";
 	data->textures[1].path = "./textures/musee_2.xpm";
 	data->textures[2].path = "./textures/musee_3.xpm";
-	data->textures[3].path = "./textures/musee_4.xpm";
+	data->textures[3].path = "./textures/sub1.xpm";
 	i = 0;
 	while (i < 4)
 	{
@@ -312,7 +280,9 @@ void setup(t_data *data)
 							&data->textures[i].bpp, 
 							&data->textures[i].line_len, 
 							&data->textures[i].endian
-						);	
+						);
+		data->textures[i].width = data->textures[i].line_len * 8 / data->textures[i].bpp;
+		data->textures[i].height = data->textures[i].width;
 		i++;
 	}
 }
