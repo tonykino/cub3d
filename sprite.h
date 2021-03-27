@@ -14,6 +14,7 @@ typedef struct	s_sprite {
 }	t_sprite;
 
 void render_sprite_projection(void);
-void render_map_sprites(void);
+void render_map_sprites(t_sprite *sprites);
+void	setup_sprites(t_sprite *sprites);
 
 #endif

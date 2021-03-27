@@ -11,7 +11,7 @@ void render_scene(t_data *data)
 	render_sprite_projection();
 	render_map_grid(&data->map);
 	render_map_rays(&data->player, data->rays);
-	render_map_sprites();
+	render_map_sprites(data->sprites);
 	render_map_player(&data->player);
 
 	copy_color_buffer_in_image(&data->win_img);
@@ -43,6 +43,7 @@ void setup(t_data *data)
 {
 	setup_map(&data->map);
 	setup_player(&data->player, &data->map);
+	setup_sprites(data->sprites);
 	load_textures(data->textures);
 }
 
