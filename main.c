@@ -8,9 +8,10 @@ void render_scene(t_data *data)
 		data->rays,
 		data->textures
 	);
-	// render_sprite_projection();
+	render_sprite_projection();
 	render_map_grid(&data->map);
 	render_map_rays(&data->player, data->rays);
+	render_map_sprites();
 	render_map_player(&data->player);
 
 	copy_color_buffer_in_image(&data->win_img);

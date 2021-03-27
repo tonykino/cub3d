@@ -4,7 +4,8 @@ static char* texture_filenames[NUM_TEXTURES] = {
 	"./textures/HD/Epic-Soul.xpm",
 	"./textures/HD/Troop_Leviathan.xpm",
 	"./textures/HD/dragon.xpm",
-	"./textures/HD/peeper.xpm"
+	"./textures/HD/peeper.xpm",
+	"./textures/Sprite_1.xpm"
 };
 
 
@@ -23,7 +24,7 @@ void load_textures(t_img *textures)
 	int wh = 1024; // TODO : get this param from xpm files...
 	int i;
 	i = 0;
-	while (i < 4)
+	while (i < NUM_TEXTURES)
 	{
 		textures[i].path = texture_filenames[i];
 		textures[i].mlx_img = mlx_xpm_file_to_image(
@@ -41,10 +42,11 @@ void load_textures(t_img *textures)
 		textures[i].width = textures[i].line_len * 8 / textures[i].bpp;
 		textures[i].height = textures[i].width;
 		i++;
-	}	
+	}
+	
 }
 
-void free_textures(void)
-{
-	; // TODO
-}
+// void free_textures(void)
+// {
+// 	; // TODO
+// }

@@ -17,11 +17,13 @@
 # include "map.h"
 # include "player.h"
 # include "wall.h"
+# include "sprite.h"
 
 typedef struct s_data
 {
-	t_img		textures[4];
+	t_img		textures[NUM_TEXTURES];
     t_img		win_img;
+	t_sprite	sprites[NUM_SPRITES];
 	t_map 		map;
 	t_player	player;
 	t_ray		rays[NUM_RAYS];
