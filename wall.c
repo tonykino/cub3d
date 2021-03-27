@@ -1,13 +1,13 @@
 #include "wall.h"
 
-void	wall_projection(int map_tile_size, float player_rotation_angle, t_ray *rays, t_img *textures)
+void	render_wall_projection(int map_tile_size, float player_rotation_angle, t_ray *rays, t_img *textures)
 {
 	int			x;
 	int			y;
-	float		projected_wall_height;
-	float		corrected_distance;
-	int			wall_top_pixel;
-	int			wall_bottom_pixel;
+	float		perp_distance;
+	float		wall_height;
+	int			wall_top_y;
+	int			wall_bottom_y;
 	int			texture_offset_x;
 	int			texture_offset_y;
 	t_img		*texture;
@@ -16,16 +16,16 @@ void	wall_projection(int map_tile_size, float player_rotation_angle, t_ray *rays
 	x = 0;
 	while (x < NUM_RAYS)
 	{
-		corrected_distance = rays[x].distance * cos(rays[x].ray_angle - player_rotation_angle);
-		projected_wall_height = (map_tile_size / corrected_distance) * DIST_PROJ_PLANE;
+		perp_distance = rays[x].distance * cos(rays[x].ray_angle - player_rotation_angle);
+		wall_height = (map_tile_size / perp_distance) * DIST_PROJ_PLANE;
 
-		wall_top_pixel = (WINDOW_HEIGHT / 2) - ((int)projected_wall_height / 2);
-		if (wall_top_pixel < 0)
-			wall_top_pixel = 0;
+		wall_top_y = (WINDOW_HEIGHT / 2) - ((int)wall_height / 2);
+		if (wall_top_y < 0)
+			wall_top_y = 0;
 
-		wall_bottom_pixel = wall_top_pixel + (int)projected_wall_height;
-		if (wall_bottom_pixel >= WINDOW_HEIGHT)
-			wall_bottom_pixel = WINDOW_HEIGHT - 1;
+		wall_bottom_y = wall_top_y + (int)wall_height;
+		if (wall_bottom_y >= WINDOW_HEIGHT)
+			wall_bottom_y = WINDOW_HEIGHT - 1;
 
 		if (rays[x].was_hit_vertical)
 		{
@@ -48,13 +48,13 @@ void	wall_projection(int map_tile_size, float player_rotation_angle, t_ray *rays
 		y = 0;
 		while (y < WINDOW_HEIGHT)
 		{
-			if (y < wall_top_pixel)
+			if (y < wall_top_y)
 			{
 				color = 0x0087CEEB;
 			}
-			else if (y < wall_bottom_pixel)
+			else if (y < wall_bottom_y)
 			{
-				texture_offset_y = (int)((float)(y - (WINDOW_HEIGHT / 2) + ((int)projected_wall_height / 2)) * texture->height / projected_wall_height);
+				texture_offset_y = (int)((float)(y - (WINDOW_HEIGHT / 2) + ((int)wall_height / 2)) * texture->height / wall_height);
 				color = get_texel_color(texture, texture_offset_x, texture_offset_y);
 			}
 			else 

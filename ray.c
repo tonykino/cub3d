@@ -189,7 +189,7 @@ void cast_all_rays(t_player *player, t_ray *rays, t_map *map)
 	}
 }
 
-void render_rays(t_player *player, t_ray rays[NUM_RAYS])
+void render_map_rays(t_player *player, t_ray rays[NUM_RAYS])
 {
 	int i;
 	t_line line;

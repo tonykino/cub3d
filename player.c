@@ -1,6 +1,6 @@
 #include "player.h"
 
-void render_player(t_player *player)
+void render_map_player(t_player *player)
 {
 	t_rect player_rect;
 	t_line player_line;

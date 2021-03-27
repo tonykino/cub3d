@@ -19,7 +19,7 @@ typedef struct s_player {
 	float turn_speed;
 }	t_player;
 
-void render_player(t_player *player);
+void render_map_player(t_player *player);
 void move_player(t_player *player, t_map *map);
 void setup_player(t_player *player, t_map *map);
 

@@ -2,15 +2,16 @@
 
 void render_scene(t_data *data)
 {
-	wall_projection(
+	render_wall_projection(
 		data->map.tile_size,
 		data->player.rotation_angle,
 		data->rays,
 		data->textures
 	);
-	render_map(&data->map);
-	render_rays(&data->player, data->rays);
-	render_player(&data->player);
+	// render_sprite_projection();
+	render_map_grid(&data->map);
+	render_map_rays(&data->player, data->rays);
+	render_map_player(&data->player);
 
 	copy_color_buffer_in_image(&data->win_img);
     mlx_put_image_to_window(get_mlx_ptr(), get_win_ptr(), data->win_img.mlx_img, 0, 0);
@@ -56,6 +57,7 @@ int	main(void)
 	mlx_loop_hook(get_mlx_ptr(), &update_and_render, &data);
     mlx_loop(get_mlx_ptr());
 
+	// free_textures();
 	clear_mlx_data(data.win_img.mlx_img);
 
 	return(0);

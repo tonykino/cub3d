@@ -45,7 +45,7 @@ void setup_map(t_map *map)
 	map->num_cols = 20;
 }
 
-void	render_map(t_map *map)
+void	render_map_grid(t_map *map)
 {
 	int i;
 	int j;
