@@ -1,28 +1,29 @@
 #include "hook.h"
 
-int	handle_keypress(int keycode, t_data *data)
+int	handle_keypress(int keycode, t_player *player)
 {
 	if (keycode == ARROW_UP_KEY_SYM)
 	{
-		data->player.walk_direction = 1;
+		player->walk_direction = 1;
+		printf("HERE");
 	}
 	else if (keycode == ARROW_DOWN_KEY_SYM)
 	{
-		data->player.walk_direction = -1;
+		player->walk_direction = -1;
 	}
 	else if (keycode == ARROW_LEFT_KEY_SYM)
 	{
-		data->player.turn_direction = -1;
+		player->turn_direction = -1;
 	}
 	else if (keycode == ARROW_RIGHT_KEY_SYM)
 	{
-		data->player.turn_direction = 1;
+		player->turn_direction = 1;
 	}
     printf("Press %d !\n", keycode);
 	return (0);
 }
 
-int handle_keyrelease(int keycode, t_data *data)
+int handle_keyrelease(int keycode, t_player *player)
 {
 	if (keycode == ESC_KEY_SYM)
 	{
@@ -31,19 +32,19 @@ int handle_keyrelease(int keycode, t_data *data)
 	}
 	else if (keycode == ARROW_UP_KEY_SYM)
 	{
-		data->player.walk_direction = 0;
+		player->walk_direction = 0;
 	}
 	else if (keycode == ARROW_DOWN_KEY_SYM)
 	{
-		data->player.walk_direction = 0;
+		player->walk_direction = 0;
 	}
 	else if (keycode == ARROW_LEFT_KEY_SYM)
 	{
-		data->player.turn_direction = 0;
+		player->turn_direction = 0;
 	}
 	else if (keycode == ARROW_RIGHT_KEY_SYM)
 	{
-		data->player.turn_direction = 0;
+		player->turn_direction = 0;
 	}
     printf("Release %d !\n", keycode);
 	return (0);

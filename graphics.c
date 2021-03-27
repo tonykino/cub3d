@@ -135,7 +135,7 @@ void	draw_line(t_line *line)
 }
 
 // mlx related functions
-void	init_data(t_data *data)
+void	init_mlx_data(t_img *img)
 {
 	mlx_ptr = mlx_init();
 	if (mlx_ptr == NULL)
@@ -146,12 +146,12 @@ void	init_data(t_data *data)
 		free(win_ptr);
 		return ;//(1);
 	}
-    data->img.mlx_img = mlx_new_image(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
-    data->img.addr = mlx_get_data_addr(
-						data->img.mlx_img, 
-						&data->img.bpp, 
-						&data->img.line_len, 
-						&data->img.endian
+    img->mlx_img = mlx_new_image(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
+    img->addr = mlx_get_data_addr(
+						img->mlx_img, 
+						&img->bpp, 
+						&img->line_len, 
+						&img->endian
 					);	
 
 	color_buffer = (uint32_t*)ft_calloc(
@@ -159,7 +159,6 @@ void	init_data(t_data *data)
 		sizeof(uint32_t)
 	);
 }
-
 
 // TODO LEGACY : manage to delete these getters
 void *get_mlx_ptr(void)
@@ -175,4 +174,9 @@ void *get_win_ptr(void)
 bool no_window(void)
 {
 	return (win_ptr == NULL);
+}
+
+void clear_mlx_data(void *mlx_img)
+{
+	mlx_destroy_image(mlx_ptr, mlx_img);
 }
