@@ -1,8 +1,8 @@
 #include "graphics.h"
 
 static uint32_t	*color_buffer = NULL;
-static void    	*mlx_ptr;
-static void    	*win_ptr;
+static void		*mlx_ptr;
+static void		*win_ptr;
 
 // img_pixel related functions
 static bool	pixel_is_out_of_screen(int x, int y)
@@ -57,6 +57,7 @@ void copy_color_buffer_in_image(t_img *img)
 }
 
 // color_buffer related functions
+
 void	draw_pixel(int x, int y, uint32_t color)
 {
 	if (pixel_is_out_of_screen(x, y))
@@ -83,6 +84,7 @@ void	clear_color_buffer(uint32_t color)
 }
 
 // drawing functions
+
 void	draw_rectangle(t_rect *rect)
 {
 	int x;
@@ -135,6 +137,7 @@ void	draw_line(t_line *line)
 }
 
 // mlx related functions
+
 void	init_mlx_data(t_img *img)
 {
 	mlx_ptr = mlx_init();
@@ -161,6 +164,7 @@ void	init_mlx_data(t_img *img)
 }
 
 // TODO LEGACY : manage to delete these getters
+
 void *get_mlx_ptr(void)
 {
 	return (mlx_ptr);

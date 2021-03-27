@@ -16,6 +16,7 @@
 # include "texture.h"
 # include "map.h"
 # include "player.h"
+# include "wall.h"
 
 typedef struct s_data
 {
