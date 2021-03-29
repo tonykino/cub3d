@@ -5,7 +5,6 @@ int	handle_keypress(int keycode, t_player *player)
 	if (keycode == ARROW_UP_KEY_SYM)
 	{
 		player->walk_direction = 1;
-		printf("HERE");
 	}
 	else if (keycode == ARROW_DOWN_KEY_SYM)
 	{

@@ -8,7 +8,7 @@ void render_scene(t_data *data)
 		data->rays,
 		data->textures
 	);
-	render_sprite_projection();
+	render_sprite_projection(data->sprites, &data->map, &data->player, data->textures, data->rays);
 	render_map_grid(&data->map);
 	render_map_rays(&data->player, data->rays);
 	render_map_sprites(data->sprites);

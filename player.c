@@ -27,6 +27,7 @@ void move_player(t_player *player, t_map *map)
 	float new_player_y;
 
 	player->rotation_angle += player->turn_direction * player->turn_speed;
+	normalize_angle(&player->rotation_angle);
 	move_step = player->walk_direction * player->walk_speed;
 	new_player_x = player->x + cos(player->rotation_angle) * move_step;
 	new_player_y = player->y + sin(player->rotation_angle) * move_step;

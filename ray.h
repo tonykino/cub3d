@@ -23,7 +23,7 @@ typedef struct s_ray {
 	bool is_facing_right;
 }	t_ray;
 
-void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map);
+void cast_ray(t_ray *ray, t_player *player, t_map *map);
 void cast_all_rays(t_player *player, t_ray *rays, t_map *map);
 void render_map_rays(t_player *player, t_ray rays[NUM_RAYS]);
 

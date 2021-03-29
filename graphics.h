@@ -46,5 +46,6 @@ void	*get_mlx_ptr(void);
 void	*get_win_ptr(void);
 void	clear_mlx_data(void *mlx_img);
 bool	no_window(void);
+bool is_transparent(uint32_t color);
 
 #endif

@@ -1,23 +1,8 @@
 #include "ray.h"
 
-static float normalize_angle(float angle)
+void cast_ray(t_ray *ray, t_player *player, t_map *map)
 {
-	angle = remainder(angle, 2 * M_PI);
-	if (angle < 0)
-	{
-		angle += 2 * M_PI;
-	}
-	return (angle);
-}
-
-static float distance_between_points(float x1, float y1, float x2, float y2)
-{
-	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
-}
-
-void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map)
-{
-	ray->ray_angle = normalize_angle(ray_angle);
+	normalize_angle(&ray->ray_angle);
 
 	if (ray->ray_angle > 0 && ray->ray_angle <= M_PI)
 		ray->is_facing_down = true;
@@ -177,14 +162,13 @@ void cast_ray(float ray_angle, t_ray *ray, t_player *player, t_map *map)
 
 void cast_all_rays(t_player *player, t_ray *rays, t_map *map)
 {
-	float ray_angle;
 	int col;
 
 	col = 0;
 	while (col < NUM_RAYS)
 	{
-		ray_angle = player->rotation_angle + atan((col - NUM_RAYS / 2) / DIST_PROJ_PLANE);
-		cast_ray(ray_angle, rays + col, player, map);
+		rays[col].ray_angle = player->rotation_angle + atan((col - NUM_RAYS / 2) / DIST_PROJ_PLANE);
+		cast_ray(rays + col, player, map);
 		col++;
 	}
 }
