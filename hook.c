@@ -26,6 +26,8 @@ int handle_keyrelease(int keycode, t_player *player)
 {
 	if (keycode == ESC_KEY_SYM)
 	{
+		printf("\n\n---- LEAKS ----\n");
+		system("leaks --quiet a.out");
 		printf("Exit !\n");
 		exit(0);
 	}
