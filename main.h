@@ -34,6 +34,15 @@
 // 	NONE
 // }	t_identifiers;
 
+# define RESOLUTION 1
+# define NO_TEXTURE 2
+# define SO_TEXTURE 4
+# define EA_TEXTURE 8
+# define WE_TEXTURE 16
+# define S_TEXTURE 32
+# define CEIL_COLOR 64
+# define FLOOR_COLOR 128
+
 typedef struct s_window
 {
 	void *mlx_ptr;
