@@ -52,6 +52,8 @@ typedef struct s_data
 	t_map 		map;
 	t_player	player;
 	t_ray		rays[NUM_RAYS];
+	uint32_t	ceil_color;
+	uint32_t	floor_color;
 }	t_data;
 
 #endif

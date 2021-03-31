@@ -40,7 +40,7 @@ int get_content_at(int x, int y)
 
 void setup_map(t_map *map)
 {
-	map->tile_size = 128;
+	map->tile_size = 1024;
 	map->num_rows = 13;
 	map->num_cols = 20;
 }

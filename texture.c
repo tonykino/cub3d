@@ -2,7 +2,7 @@
 
 static char* texture_filenames[NUM_TEXTURES] = {
 	"./textures/HD/Epic-Soul.xpm",
-	"./textures/HD/Troop_Leviathan.xpm",
+	"./textures/musee_1.xpm",
 	"./textures/HD/dragon.xpm",
 	"./textures/HD/peeper.xpm",
 	"./textures/Sprite_1.xpm"
@@ -21,7 +21,6 @@ uint32_t get_texel_color(t_img *texture, int x, int y)
 
 void load_textures(t_img *textures)
 {
-	int wh = 1024; // TODO : get this param from xpm files...
 	int i;
 	i = 0;
 	while (i < NUM_TEXTURES)
@@ -30,8 +29,8 @@ void load_textures(t_img *textures)
 		textures[i].mlx_img = mlx_xpm_file_to_image(
 			get_mlx_ptr(), 
 			textures[i].path, 
-			&wh, 
-			&wh
+			&textures[i].width,
+			&textures[i].height
 		);
 		textures[i].addr = mlx_get_data_addr(
 							textures[i].mlx_img, 
@@ -39,8 +38,6 @@ void load_textures(t_img *textures)
 							&textures[i].line_len, 
 							&textures[i].endian
 						);
-		textures[i].width = textures[i].line_len * 8 / textures[i].bpp;
-		textures[i].height = textures[i].width;
 		i++;
 	}
 	

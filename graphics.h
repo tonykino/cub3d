@@ -12,6 +12,7 @@ typedef struct  s_img {
     void	*mlx_img;
     char	*addr;
 	char	*path;
+	char	*name;
     int		bpp;
     int		line_len;
     int		endian;

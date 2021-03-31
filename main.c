@@ -92,53 +92,112 @@ bool valid_cub_file_name(char *filename)
 void parse_resolution(t_window *window, char *line)
 {
 	char **res;
+	int width;
+	int height;
 
-	printf("line='%s'\n", line);
+	// printf("line='%s'\n", line);
 	res = ft_split(line, " \t");
-	printf("res[0]='%s', res[1]='%s', res[2]='%s'\n", res[0], res[1], res[2]);
+	// printf("res[0]='%s', res[1]='%s', res[2]='%s'\n", res[0], res[1], res[2]);
 	if (ft_strcmp(res[0], "R") || !is_number(res[1]) || !is_number(res[2]))
 	{
 		clear_and_exit(5, "Error while parsing resolution.");
 	}
-	window->width = ft_atoi(res[1]);
-	window->height = ft_atoi(res[2]);
+	width = ft_atoi(res[1]);
+	height = ft_atoi(res[2]);
+	window->width = width;
+	window->height = height;
+	window->win_img.width = width;
+	window->win_img.height = height;
 	free(res[0]);
 	free(res[1]);
 	free(res[2]);
 	free(res);
 }
 
+void parse_texture(t_img *texture, char*line)
+{
+	char **tex;
+	// char *name;
+
+	// printf("line='%s'\n", line);
+	tex = ft_split(line, " \t");
+	// printf("addr='%p' : tex[0]='%s', tex[1]='%s'\n", texture, tex[0], tex[1]);
+	texture->name = tex[0];
+	texture->path = tex[1];
+	// printf("texture->name = '%s', texture->path = '%s'\n", texture->name, texture->path);
+
+	// TODO : try to open file
+	// TODO : get width and height from xpm file => not needed, we got it with mlx function !!!! thx to Emma :D
+	free(tex);
+}
+
+bool is_texture_identifier(char *line)
+{
+	return (
+		((!ft_strncmp(line, "NO", 2) 
+			|| !ft_strncmp(line, "SO", 2) 
+			|| !ft_strncmp(line, "WE", 2) 
+			|| !ft_strncmp(line, "EA", 2)) 
+		&& ft_strchr(" \t", line[2])) 
+		|| ( *line == 'S' && ft_strchr(" \t", line[1]))
+	);
+}
+
+void parse_color(t_data *data, char *line)
+{
+	char **colary;
+	uint32_t *color;
+	// (void) data;
+	colary = ft_split(line, " \t,");
+	// printf("colary[0]='%s', colary[1]='%s', colary[2]='%s', colary[3]='%s'\n", colary[0], colary[1], colary[2], colary[3]);
+	if (!ft_strcmp(colary[0], "C"))
+		color = &data->ceil_color;
+	else
+		color = &data->floor_color;
+
+	*color = encode_rgb(ft_atoi(colary[1]), ft_atoi(colary[2]), ft_atoi(colary[3]));
+	free(colary[0]);
+	free(colary[1]);
+	free(colary[2]);
+	free(colary[3]);
+	free(colary);
+}
+
 void parse_line(t_data *data, char *line)
 {
 	int i;
 	static bool is_map_started;
+	static int texture_id = 0;
 
 	i = 0;
 	while(line[i] && ft_strchr(" \t", line[i]))
 		i++;
+	if (line[i] == '\0')
+	{
+		free(line);
+		return ;
+	}
 	if (!is_map_started)
 	{
 		if (line[i] == 'R' && ft_strchr(" \t", line[i + 1]))
 		{
 			parse_resolution(&data->window, line);
-			printf("height=%d, width=%d\n", data->window.height, data->window.width);
+			printf("window.height=%d, window.width=%d\n", data->window.height, data->window.width);
 		}
-		if (line[i] == 'N' && line[i + 1] == 'O' && ft_strchr(" \t", line[i + 2]))
-			printf("texture no : %s\n", line);
-		if (line[i] == 'S' && line[i + 1] == 'O' && ft_strchr(" \t", line[i + 2]))
-			printf("texture so : %s\n", line);
-		if (line[i] == 'W' && line[i + 1] == 'E' && ft_strchr(" \t", line[i + 2]))
-			printf("texture we : %s\n", line);
-		if (line[i] == 'E' && line[i + 1] == 'A' && ft_strchr(" \t", line[i + 2]))
-			printf("texture ea : %s\n", line);
-		if (line[i] == 'S' && ft_strchr(" \t", line[i + 1]))
-			printf("texture s  : %s\n", line);
-		if (line[i] == 'F' && ft_strchr(" \t", line[i + 1]))
-			printf("color f    : %s\n", line);
-		if (line[i] == 'C' && ft_strchr(" \t", line[i + 1]))
-			printf("color c    : %s\n", line);
+		if (is_texture_identifier(line + i))
+		{
+			parse_texture(&data->textures[texture_id], line);
+			printf("texture n°%d: texture.name='%s', texture.path='%s'\n", texture_id, data->textures[texture_id].name, data->textures[texture_id].path);
+			texture_id++;
+		}
+		if (ft_strchr("FC", line[i]) && ft_strchr(" \t", line[i + 1]))
+		{
+			parse_color(data, line);
+			printf("ceil_color=%#.8X, floor_color=%#.8X\n", data->ceil_color, data->floor_color);
+		}
 		if (line[i] == '1')
 		{
+			// TODO check if all identifiers are here
 			is_map_started = true;
 			printf("starting map !\nm:%s\n", line);
 		}
@@ -149,7 +208,6 @@ void parse_line(t_data *data, char *line)
 			printf("m:%s\n", line);
 	}
 	free(line);
-	(void) data;
 }
 
 void	parse_cub_file(t_data *data, char *file)
@@ -181,6 +239,7 @@ void	init_img(t_img *img)
 	img->mlx_img = NULL;
 	img->addr = NULL;
 	img->path = NULL;
+	img->name = NULL;
 	img->bpp = 0;
 	img->line_len = 0;
 	img->endian = 0;

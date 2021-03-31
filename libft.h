@@ -20,6 +20,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	**ft_split(char *str, char *charset);
 int			ft_atoi(const char *str);
 bool is_number(char *str);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 bool		ft_isdigit(int c);
 
 #endif
