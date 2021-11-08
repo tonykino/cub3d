@@ -12,14 +12,17 @@ SRC = 	$(addprefix srcs/, main.c \
 		ft_split.c \
 		ft_strncmp.c \
 		get_next_line.c \
-		get_next_line_utils.c)
+		get_next_line_utils.c \
+		initializer.c \
+		clear_and_exit.c \
+		parser.c)
 
 
 HEADER	= $(addprefix -I , includes)
 
 OBJ = $(SRC:.c=.o)
 
-NAME = cub3d
+NAME = cub3D
 CC = clang
 CFLAGS = -Wall -Werror -Wextra
 

@@ -148,7 +148,7 @@ void	init_mlx_data(t_img *img)
 	mlx_ptr = mlx_init();
 	if (mlx_ptr == NULL)
 		return ;//(1);
-    win_ptr = mlx_new_window(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Test");
+    win_ptr = mlx_new_window(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
 	if (win_ptr == NULL)
 	{
 		free(win_ptr);

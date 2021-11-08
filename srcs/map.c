@@ -59,8 +59,8 @@ void	render_map_grid(t_map *map)
 		{
 			rect.x = j * map->tile_size * MINIMAP_SCALE_FACTOR;
 			rect.y = i * map->tile_size * MINIMAP_SCALE_FACTOR;
-			rect.width = map->tile_size * MINIMAP_SCALE_FACTOR;
-			rect.height = map->tile_size * MINIMAP_SCALE_FACTOR;
+			rect.width = map->tile_size * MINIMAP_SCALE_FACTOR + 1; // fix by rounding up instead of adding 1
+			rect.height = map->tile_size * MINIMAP_SCALE_FACTOR + 1; // fix by rounding up instead of adding 1
 
 			if (grid[i][j] == 0)
 				rect.color = 0x00AAAAAA;
