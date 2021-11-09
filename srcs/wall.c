@@ -16,8 +16,15 @@ void	render_wall_projection(int map_tile_size, float player_rotation_angle, t_ra
 	x = 0;
 	while (x < NUM_RAYS)
 	{
-		perp_distance = rays[x].distance * cos(rays[x].ray_angle - player_rotation_angle);
-		wall_height = (map_tile_size / perp_distance) * DIST_PROJ_PLANE;
+		if (rays[x].wall_hit_x == 0.0 && rays[x].wall_hit_y == 0.0)
+		{
+			wall_height = 0.0;
+		}
+		else
+		{
+			perp_distance = rays[x].distance * cos(rays[x].angle - player_rotation_angle);
+			wall_height = (map_tile_size / perp_distance) * DIST_PROJ_PLANE;
+		}
 
 		wall_top_y = (WINDOW_HEIGHT / 2) - ((int)wall_height / 2);
 		if (wall_top_y < 0)

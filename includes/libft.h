@@ -10,7 +10,7 @@
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 int	encode_rgb(uint8_t red, uint8_t green, uint8_t blue);
-float distance_between_points(float x1, float y1, float x2, float y2);
+float dist_between_points(float x1, float y1, float x2, float y2);
 void normalize_angle(float *angle);
 bool		ft_strcmp(const char *s1, const char *s2);
 size_t	ft_strlen(const char *s);

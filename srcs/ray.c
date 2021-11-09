@@ -1,191 +1,221 @@
 #include "ray.h"
 
-void cast_ray(t_ray *ray, t_player *player, t_map *map)
+void	set_facing(t_ray *ray)
 {
-	normalize_angle(&ray->ray_angle);
-
-	if (ray->ray_angle > 0 && ray->ray_angle <= M_PI)
+	if (ray->angle > 0 && ray->angle <= M_PI)
 		ray->is_facing_down = true;
 	else
 		ray->is_facing_down = false;
 	ray->is_facing_up = !ray->is_facing_down;
-
-	if (ray->ray_angle < M_PI_2 || ray->ray_angle > M_PI + M_PI_2)
+	if (ray->angle < M_PI_2 || ray->angle > M_PI + M_PI_2)
 		ray->is_facing_right = true;
 	else
 		ray->is_facing_right = false;
 	ray->is_facing_left = !ray->is_facing_right;
+}
 
-	float xintercept;
-	float yintercept;
-	float xstep;
-	float ystep;
-
-
-	// HORZ PART
-	bool found_horz_wall_hit = false;
-	float horz_wall_hit_x = 0.0;
-	float horz_wall_hit_y = 0.0;
-	float next_horz_touch_x;
-	float next_horz_touch_y;
-	int horz_wall_content = 0;
-
-	yintercept = floor(player->y / map->tile_size) * map->tile_size;
-	if (ray->is_facing_down)
-		yintercept += map->tile_size;
-
-	xintercept = player->x + (yintercept - player->y) / tan(ray->ray_angle);
-
-	if (ray->is_facing_down)
-		ystep = map->tile_size;
+void	set_hit_distance(t_player *player, t_ray_hit *rh)
+{
+	if (rh->hit)
+		rh->hit_dist = dist_between_points(player->x, player->y, rh->x, rh->y);
 	else
-		ystep = -1 * map->tile_size;
+		rh->hit_dist = MAX_RAY_DISTANCE;
+}
 
-	xstep = map->tile_size / tan(ray->ray_angle);
-	if ((xstep > 0 && ray->is_facing_left) || (xstep < 0 && ray->is_facing_right))
-		xstep *= -1;
+t_fpoint	set_nxt_touchs(t_ray *ray, t_player *player, int tilesize, bool dir)
+{
+	t_fpoint	nxt_touchs;
 
-	next_horz_touch_x = xintercept;
-	next_horz_touch_y = yintercept;
-
-	while (is_inside_map(map, next_horz_touch_x, next_horz_touch_y))
-	// while(next_horz_touch_x >= 0 && (next_horz_touch_x < map->num_cols * map->tile_size) && next_horz_touch_y >= 0 && (next_horz_touch_y < map->num_rows * map->tile_size))
+	if (dir == HORIZONTAL)
 	{
-		float y_to_check;
+		nxt_touchs.y = floor(player->y / tilesize) * tilesize;
+		if (ray->is_facing_down)
+			nxt_touchs.y += tilesize;
+		nxt_touchs.x = player->x + (nxt_touchs.y - player->y) / tan(ray->angle);
+	}
+	else
+	{
+		nxt_touchs.x = floor(player->x / tilesize) * tilesize;
+		if (ray->is_facing_right)
+			nxt_touchs.x += tilesize;
+		nxt_touchs.y = player->y + (nxt_touchs.x - player->x) * tan(ray->angle);
+	}
+	return (nxt_touchs);
+}
 
+t_fpoint	set_steps(t_ray *ray, int tile_size, bool direction)
+{
+	t_fpoint	steps;
+
+	if (direction == HORIZONTAL)
+	{
+		if (ray->is_facing_down)
+			steps.y = tile_size;
+		else
+			steps.y = -1 * tile_size;
+		steps.x = tile_size / tan(ray->angle);
+		if ((steps.x > 0 && ray->is_facing_left) || \
+			(steps.x < 0 && ray->is_facing_right))
+			steps.x *= -1;
+	}
+	else
+	{
+		if (ray->is_facing_right)
+			steps.x = tile_size;
+		else
+			steps.x = -1 * tile_size;
+		steps.y = tile_size * tan(ray->angle);
+		if ((steps.y > 0 && ray->is_facing_up) || \
+			(steps.y < 0 && ray->is_facing_down))
+			steps.y *= -1;
+	}
+	return (steps);
+}
+
+void	init_ray_hit(t_ray_hit *rh)
+{
+	rh->hit = false;
+	rh->x = 0.0;
+	rh->y = 0.0;
+	rh->wall_content = 0;
+}
+
+float	set_perpendicular_coord(t_ray *ray, t_fpoint *touchs, bool direction)
+{
+	float	xy_opp;
+
+	if (direction == HORIZONTAL)
+	{
 		if (ray->is_facing_up)
-			y_to_check = next_horz_touch_y - 1;
+			xy_opp = touchs->y - 1;
 		else
-			y_to_check = next_horz_touch_y;
-
-		if (map_has_wall_at(map, next_horz_touch_x, y_to_check))
-		{
-			horz_wall_hit_x = next_horz_touch_x;
-			horz_wall_hit_y = next_horz_touch_y;
-			next_horz_touch_y = floor(next_horz_touch_y / map->tile_size);
-			next_horz_touch_x = floor(next_horz_touch_x / map->tile_size);
-			horz_wall_content = get_content_at((int)next_horz_touch_x, (int)next_horz_touch_y);
-			found_horz_wall_hit = true;
-			break;
-		}
-		else
-		{
-			next_horz_touch_x += xstep;
-			next_horz_touch_y += ystep;
-		}
+			xy_opp = touchs->y;
 	}
-
-	// VERT PART
-	bool found_vert_wall_hit = false;
-	float vert_wall_hit_x = 0.0;
-	float vert_wall_hit_y = 0.0;
-	float next_vert_touch_x;
-	float next_vert_touch_y;
-	int vert_wall_content = 0;
-
-	xintercept = floor(player->x / map->tile_size) * map->tile_size;
-	if (ray->is_facing_right)
-		xintercept += map->tile_size;
-
-	yintercept = player->y + (xintercept - player->x) * tan(ray->ray_angle);
-
-	if (ray->is_facing_right)
-		xstep = map->tile_size;
 	else
-		xstep = -1 * map->tile_size;
-
-	ystep = map->tile_size * tan(ray->ray_angle);
-	if ((ystep > 0 && ray->is_facing_up) || (ystep < 0 && ray->is_facing_down))
-		ystep *= -1;
-
-	next_vert_touch_x = xintercept;
-	next_vert_touch_y = yintercept;
-
-	while (is_inside_map(map, next_vert_touch_x, next_vert_touch_y))
-	// while(next_vert_touch_x >= 0 && (next_vert_touch_x < map->num_cols * map->tile_size) && next_vert_touch_y >= 0 && (next_vert_touch_y < map->num_rows * map->tile_size))
 	{
-		float x_to_check;
-		
 		if (ray->is_facing_left)
-			x_to_check = next_vert_touch_x - 1;
+			xy_opp = touchs->x - 1;
 		else
-			x_to_check = next_vert_touch_x;
-
-		if (map_has_wall_at(map, x_to_check, next_vert_touch_y))
-		{
-			vert_wall_hit_x = next_vert_touch_x;
-			vert_wall_hit_y = next_vert_touch_y;
-			next_vert_touch_y = floor(next_vert_touch_y / map->tile_size);
-			next_vert_touch_x = floor(next_vert_touch_x / map->tile_size);
-			vert_wall_content = get_content_at((int)next_vert_touch_x, (int)next_vert_touch_y);
-			found_vert_wall_hit = true;
-			break;
-		}
-		else
-		{
-			next_vert_touch_x += xstep;
-			next_vert_touch_y += ystep;
-		}
+			xy_opp = touchs->x;
 	}
+	return (xy_opp);
+}
 
-	// Calculate both horz and vert hit distances and choose the smallest one
-	float horz_hit_distance;
-	float vert_hit_distance;
+t_fpoint	sum_2_fpoints(t_fpoint a, t_fpoint b)
+{
+	t_fpoint	res;
 
-	if (found_horz_wall_hit)
-		horz_hit_distance = distance_between_points(player->x, player->y, horz_wall_hit_x, horz_wall_hit_y);
-	else
-		horz_hit_distance = FLT_MAX;
-	
-	if (found_vert_wall_hit)
-		vert_hit_distance = distance_between_points(player->x, player->y, vert_wall_hit_x, vert_wall_hit_y);
-	else
-		vert_hit_distance = FLT_MAX;
+	res.x = a.x + b.x;
+	res.y = a.y + b.y;
+	return (res);
+}
 
-	if (vert_hit_distance < horz_hit_distance)
+void	update_rh_and_nxt_touchs(t_ray_hit *rh, t_fpoint *ntouchs, int tilesize)
+{
+	rh->x = ntouchs->x;
+	rh->y = ntouchs->y;
+	ntouchs->x = floor(ntouchs->x / tilesize);
+	ntouchs->y = floor(ntouchs->y / tilesize);
+	rh->wall_content = get_content_at(ntouchs);
+	rh->hit = true;
+}
+
+t_ray_hit	cast_in_dir(t_ray *ray, t_player *player, t_map *map, bool dir)
+{
+	t_ray_hit	rh;
+	t_fpoint	nxt_touchs;
+	t_fpoint	steps;
+	int			count;
+	float		xy_opp;
+
+	init_ray_hit(&rh);
+	nxt_touchs = set_nxt_touchs(ray, player, map->tile_size, dir);
+	steps = set_steps(ray, map->tile_size, dir);
+	count = 0;
+	while (is_inside_map(map, &nxt_touchs) || count < MAX_VIEW_DISTANCE)
 	{
-		ray->distance = vert_hit_distance;
-		ray->wall_hit_x = vert_wall_hit_x;
-		ray->wall_hit_y = vert_wall_hit_y;
-		ray->wall_hit_content = vert_wall_content;
+		count++;
+		xy_opp = set_perpendicular_coord(ray, &nxt_touchs, dir);
+		if ((dir == HORIZONTAL && map_has_wall_at(map, nxt_touchs.x, xy_opp)) \
+			|| (dir == VERTICAL && map_has_wall_at(map, xy_opp, nxt_touchs.y)))
+		{
+			update_rh_and_nxt_touchs(&rh, &nxt_touchs, map->tile_size);
+			break ;
+		}
+		else
+			nxt_touchs = sum_2_fpoints(steps, nxt_touchs);
+	}
+	set_hit_distance(player, &rh);
+	return (rh);
+}
+
+void	copy_rh_in_ray(t_ray *ray, t_ray_hit *rh)
+{
+	ray->distance = rh->hit_dist;
+	ray->wall_hit_x = rh->x;
+	ray->wall_hit_y = rh->y;
+	ray->wall_hit_content = rh->wall_content;
+}
+
+void	cast_ray(t_ray *ray, t_player *player, t_map *map)
+{
+	t_ray_hit	hray;
+	t_ray_hit	vray;
+
+	normalize_angle(&ray->angle);
+	set_facing(ray);
+	hray = cast_in_dir(ray, player, map, HORIZONTAL);
+	vray = cast_in_dir(ray, player, map, VERTICAL);
+	if (vray.hit_dist < hray.hit_dist)
+	{
+		copy_rh_in_ray(ray, &vray);
 		ray->was_hit_vertical = true;
 	}
 	else
 	{
-		ray->distance = horz_hit_distance;
-		ray->wall_hit_x = horz_wall_hit_x;
-		ray->wall_hit_y = horz_wall_hit_y;
-		ray->wall_hit_content = horz_wall_content;
+		copy_rh_in_ray(ray, &hray);
 		ray->was_hit_vertical = false;
 	}
 }
 
-void cast_all_rays(t_player *player, t_ray *rays, t_map *map)
+void	cast_all_rays(t_player *player, t_ray *rays, t_map *map)
 {
-	int col;
+	int	col;
 
 	col = 0;
 	while (col < NUM_RAYS)
 	{
-		rays[col].ray_angle = player->rotation_angle + atan((col - NUM_RAYS / 2) / DIST_PROJ_PLANE);
+		rays[col].angle = player->rotation_angle + \
+			atan((col - NUM_RAYS / 2) / DIST_PROJ_PLANE);
 		cast_ray(rays + col, player, map);
 		col++;
 	}
 }
 
-void render_map_rays(t_player *player, t_ray rays[NUM_RAYS])
+void	render_map_rays(t_player *player, t_ray rays[NUM_RAYS])
 {
-	int i;
-	t_line line;
+	int		i;
+	t_line	line;
 
 	i = 0;
 	while (i < NUM_RAYS)
 	{
 		line.x0 = player->x * MINIMAP_SCALE_FACTOR;
 		line.y0 = player->y * MINIMAP_SCALE_FACTOR;
-		line.x1 = rays[i].wall_hit_x * MINIMAP_SCALE_FACTOR;
-		line.y1 = rays[i].wall_hit_y * MINIMAP_SCALE_FACTOR;
-		line.color = 0x00FF0000;
+		if (rays[i].wall_hit_x == 0.0 && rays[i].wall_hit_y == 0.0)
+		{
+			line.x1 = line.x0 + floor(MAX_RAY_DISTANCE * \
+				MINIMAP_SCALE_FACTOR * cos(rays[i].angle));
+			line.y1 = line.y0 + floor(MAX_RAY_DISTANCE * \
+				MINIMAP_SCALE_FACTOR * sin(rays[i].angle));
+			line.color = 0x00FF00FF;
+		}
+		else
+		{
+			line.x1 = floor(rays[i].wall_hit_x * MINIMAP_SCALE_FACTOR);
+			line.y1 = floor(rays[i].wall_hit_y * MINIMAP_SCALE_FACTOR);
+			line.color = 0x00FF0000;
+		}
 		draw_line(&line);
 		i++;
 	}

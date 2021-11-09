@@ -31,8 +31,11 @@ void move_player(t_player *player, t_map *map)
 	move_step = player->walk_direction * player->walk_speed;
 	new_player_x = player->x + cos(player->rotation_angle) * move_step;
 	new_player_y = player->y + sin(player->rotation_angle) * move_step;
+
+	// Handle wall collision. To make it a bonus, remove this if condition but be carefull of bugs
 	if (!map_has_wall_at(map, new_player_x, new_player_y))
 	{
+		// (void) map;
 		player->x = new_player_x;
 		player->y = new_player_y;
 	}
@@ -40,8 +43,8 @@ void move_player(t_player *player, t_map *map)
 
 void setup_player(t_player *player, t_map *map)
 {
-	player->x = map->num_cols * map->tile_size / 2;
-	player->y = map->num_rows * map->tile_size / 2;
+	player->x = map->num_cols * map->tile_size / 2; // TODO : player is popping is the middle of the room ?!
+	player->y = map->num_rows * map->tile_size / 2; // TODO : player is popping is the middle of the room ?!
 	player->width = 12;
 	player->height = 12;
 	player->turn_direction = 0;

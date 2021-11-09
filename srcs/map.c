@@ -1,19 +1,20 @@
 #include "map.h"
 
+// TODO : put this grid in map struct
 static const int	grid[13][20] = { \
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
+		{0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0}, \
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
+		{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
 		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1} \
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1} \
 	};
 
 bool map_has_wall_at(t_map *map, float x, float y)
@@ -21,24 +22,26 @@ bool map_has_wall_at(t_map *map, float x, float y)
 	int map_x_index;
 	int map_y_index;
 
-	if (x < 0 || x >= map->num_cols * map->tile_size || y < 0 || y >= map->num_rows * map->tile_size)
-		return (true);
+	if (x < 0 || x >= map->num_cols * map->tile_size || \
+		y < 0 || y >= map->num_rows * map->tile_size)
+		return (false);
 	map_x_index = floor(x / map->tile_size);
 	map_y_index = floor(y / map->tile_size);
 	return (grid[map_y_index][map_x_index] == 1);
 }
 
-bool is_inside_map(t_map *map, int x, int y)
+bool is_inside_map(t_map *map, t_fpoint *coord)
 {
-	return (x >= 0 && (x < map->num_cols * map->tile_size) && y >= 0 && (y < map->num_rows * map->tile_size));
+	return (coord->x >= 0 && (coord->x < map->num_cols * map->tile_size) && \
+		coord->y >= 0 && (coord->y < map->num_rows * map->tile_size));
 }
 
-int get_content_at(int x, int y)
+int get_content_at(t_fpoint *coord)
 {
-	return (grid[y][x]);
+	return (grid[(int)coord->y][(int)coord->x]);
 }
 
-void setup_map(t_map *map)
+void setup_map(t_map *map) // TODO : Warning hardcoded !!
 {
 	map->tile_size = 1024;
 	map->num_rows = 13;
@@ -59,8 +62,8 @@ void	render_map_grid(t_map *map)
 		{
 			rect.x = j * map->tile_size * MINIMAP_SCALE_FACTOR;
 			rect.y = i * map->tile_size * MINIMAP_SCALE_FACTOR;
-			rect.width = map->tile_size * MINIMAP_SCALE_FACTOR + 1; // fix by rounding up instead of adding 1
-			rect.height = map->tile_size * MINIMAP_SCALE_FACTOR + 1; // fix by rounding up instead of adding 1
+			rect.width = ceil(map->tile_size * MINIMAP_SCALE_FACTOR);
+			rect.height = ceil(map->tile_size * MINIMAP_SCALE_FACTOR);
 
 			if (grid[i][j] == 0)
 				rect.color = 0x00AAAAAA;

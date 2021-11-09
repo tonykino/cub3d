@@ -68,7 +68,7 @@ void render_sprite_projection(t_sprite *sprites, t_map *map, t_player *player, t
 		{
 			sprites[i].visible = true; // Usefull ?
 			sprites[i].angle = angle_sprite_player;
-			sprites[i].distance = distance_between_points(sprites[i].x, sprites[i].y, player->x, player->y);
+			sprites[i].distance = dist_between_points(sprites[i].x, sprites[i].y, player->x, player->y);
 			visible_sprites[num_visible_sprites] = sprites[i];
 			num_visible_sprites++;	
 		}
