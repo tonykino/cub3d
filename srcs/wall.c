@@ -6,14 +6,13 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 12:09:24 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 12:16:57 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/10 15:38:51 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wall.h"
 
-void	render_wall_projection(int tilesize, float player_rotation_angle, \
-	t_ray *rays, t_img *textures)
+void	render_wall_projection(t_data *data)
 {
 	int			x;
 	int			y;
@@ -24,14 +23,16 @@ void	render_wall_projection(int tilesize, float player_rotation_angle, \
 	x = 0;
 	while (x < NUM_RAYS)
 	{
-		wall = set_wall(&rays[x], player_rotation_angle, tilesize);
-		wall.texture = get_wall_texture(textures, &rays[x]);
-		texture_offset_x = set_tex_offset_x(wall.texture, &rays[x], tilesize);
+		wall = set_wall(&data->rays[x], data->player.rotation_angle, \
+			data->map.tile_size);
+		wall.texture = get_wall_texture(data->textures, &data->rays[x]);
+		texture_offset_x = set_tex_offset_x(wall.texture, &data->rays[x], \
+			data->map.tile_size);
 		y = 0;
 		while (y < WINDOW_HEIGHT)
 		{
 			color = get_color(y, &wall, texture_offset_x);
-			draw_pixel(x, y, color);
+			draw_pixel(x, y, color, data->window.color_buffer);
 			y++;
 		}
 		x++;

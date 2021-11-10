@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   data_struct.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 15:48:21 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/10 15:48:46 by tokino           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef DATA_STRUCT_H
 # define DATA_STRUCT_H
 
@@ -9,21 +21,11 @@
 # include "player.h"
 # include "ray.h"
 
-typedef struct s_window
-{
-	void *mlx_ptr;
-	void *win_ptr;
-	uint32_t *color_buffer;
-	t_img win_img;
-	int width;
-	int height;
-}	t_window;
-
 typedef struct s_data
 {
 	t_window	window;
 	t_img		textures[NUM_TEXTURES];
-	t_map 		map;
+	t_map		map;
 	t_player	player;
 	t_ray		rays[NUM_RAYS];
 	uint32_t	ceil_color;

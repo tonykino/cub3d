@@ -48,7 +48,7 @@ void setup_map(t_map *map) // TODO : Warning hardcoded !!
 	map->num_cols = 20;
 }
 
-void	render_map_grid(t_map *map)
+void	render_map_grid(t_map *map, t_window *window)
 {
 	int i;
 	int j;
@@ -70,7 +70,7 @@ void	render_map_grid(t_map *map)
 			else
 				rect.color = 0x00123456;
 
-			draw_rectangle(&rect);
+			draw_rectangle(&rect, window->color_buffer);
 			j++;
 		}
 		i++;

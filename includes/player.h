@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 14:35:18 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 14:35:52 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/10 15:28:04 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_player {
 }	t_player;
 
 void	move_player(t_player *player, t_map *map);
-void	render_map_player(t_player *player);
+void	render_map_player(t_player *player, t_window *window);
 void	setup_player(t_player *player, t_map *map);
 
 // PRIVATE API

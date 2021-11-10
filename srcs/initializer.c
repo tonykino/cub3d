@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initializer.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 15:42:02 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/10 15:42:20 by tokino           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "initializer.h"
 
-void init_cub3d(t_data *data, int argc, char **argv)
+void	init_cub3d(t_data *data, int argc, char **argv)
 {
 	if (argc != 2 && argc != 3)
 		clear_and_exit(1, "Invalid number of arguments.");
@@ -8,12 +20,12 @@ void init_cub3d(t_data *data, int argc, char **argv)
 		clear_and_exit(1, "Invalid map file name.");
 	init_all_data(data);
 	parse_cub_file(data, argv[1]);
-	init_mlx_data(&data->window.win_img);
+	init_mlx_data(&data->window);
 }
 
-bool valid_cub_file_name(char *filename)
+bool	valid_cub_file_name(char *filename)
 {
-	int len;
+	int	len;
 
 	len = ft_strlen(filename);
 	return (!ft_strcmp(filename + len - 4, ".cub"));

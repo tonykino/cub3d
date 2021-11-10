@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 12:14:09 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 12:17:09 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/10 15:32:51 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 # include "ray.h"
 # include "texture.h"
+# include "data_struct.h"
 
 // PUBLIC API
-void		render_wall_projection(int map_tile_size, \
-	float player_rotation_angle, t_ray *rays, t_img *textures);
+void		render_wall_projection(t_data *data);
 
 // PRIVATE API
 typedef struct s_wall {

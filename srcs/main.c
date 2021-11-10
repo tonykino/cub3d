@@ -2,21 +2,17 @@
 
 void render_scene(t_data *data)
 {
-	render_wall_projection(
-		data->map.tile_size,
-		data->player.rotation_angle,
-		data->rays,
-		data->textures
-	);
+	render_wall_projection(data);
 	if (MINIMAP_SCALE_FACTOR > 0)
 	{
-		render_map_grid(&data->map);
-		render_map_rays(&data->map, &data->player, data->rays);
-		render_map_player(&data->player);
+		render_map_grid(&data->map, &data->window);
+		render_map_rays(&data->map, &data->player, data->rays, &data->window);
+		render_map_player(&data->player, &data->window);
 	}
 
-	copy_color_buffer_in_image(&data->window.win_img);
-    mlx_put_image_to_window(get_mlx_ptr(), get_win_ptr(), data->window.win_img.mlx_img, 0, 0);
+	copy_color_buffer_in_image(&data->window);
+    mlx_put_image_to_window(get_mlx_ptr(), get_win_ptr(), \
+		data->window.win_img.mlx_img, 0, 0);
 }
 
 void update_scene(t_data *data)
@@ -32,7 +28,7 @@ int update_and_render(t_data *data)
 	
 	// mlx_clear_window(data->mlx_ptr, data->win_ptr); // Useless ?
 	// clear_img(&data->win_img);
-	clear_color_buffer(0x00FFFFFF);
+	clear_color_buffer(data->window.color_buffer);
 
 	update_scene(data);
 	render_scene(data);

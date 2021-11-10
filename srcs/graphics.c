@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   graphics.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 15:42:50 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/10 15:43:15 by tokino           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "graphics.h"
 
-static uint32_t	*color_buffer = NULL;
 static void		*mlx_ptr;
 static void		*win_ptr;
 
@@ -38,7 +49,7 @@ void clear_img(t_img *img)
 	}
 }
 
-void copy_color_buffer_in_image(t_img *img)
+void copy_color_buffer_in_image(t_window *window)
 {
 	int x;
 	int y;
@@ -49,7 +60,7 @@ void copy_color_buffer_in_image(t_img *img)
 		y = 0;
 		while (y < WINDOW_HEIGHT)
 		{
-			img_pixel_put(img, x, y, color_buffer[y * WINDOW_WIDTH + x]);
+			img_pixel_put(&window->win_img, x, y, window->color_buffer[y * WINDOW_WIDTH + x]);
 			y++;
 		}
 		x++;
@@ -63,14 +74,14 @@ bool is_transparent(uint32_t color)
 	return ((color & 0xFF000000) == 0xFF000000);
 }
 
-void	draw_pixel(int x, int y, uint32_t color)
+void	draw_pixel(int x, int y, uint32_t color, uint32_t *color_buffer)
 {
 	if (pixel_is_out_of_screen(x, y) || is_transparent(color))
 		return ;
 	color_buffer[y * WINDOW_WIDTH + x] = color;
 }
 
-void	clear_color_buffer(uint32_t color)
+void	clear_color_buffer(uint32_t *color_buffer)
 {
 	int i;
 	int j;
@@ -81,7 +92,7 @@ void	clear_color_buffer(uint32_t color)
 		j = 0;
 		while (j < WINDOW_HEIGHT)
 		{
-			color_buffer[j * WINDOW_WIDTH + i] = color;
+			color_buffer[j * WINDOW_WIDTH + i] = BLACK_COLOR;
 			j++;
 		}
 		i++;
@@ -90,7 +101,7 @@ void	clear_color_buffer(uint32_t color)
 
 // drawing functions
 
-void	draw_rectangle(t_rect *rect)
+void	draw_rectangle(t_rect *rect, uint32_t *color_buffer)
 {
 	int x;
 	int y;
@@ -101,14 +112,14 @@ void	draw_rectangle(t_rect *rect)
 		y = rect->y;
 		while(y < rect->y + rect->height)
 		{
-			draw_pixel(x, y, rect->color);
+			draw_pixel(x, y, rect->color, color_buffer);
 			y++;
 		}
 		x++;
 	}
 }
 
-void	draw_line(t_line *line)
+void	draw_line(t_line *line, uint32_t *color_buffer)
 {
 	int dx;
 	int sx;
@@ -124,7 +135,7 @@ void	draw_line(t_line *line)
 	err = dx + dy;
   	while (1)
 	{
-		draw_pixel(line->x0, line->y0, line->color);
+		draw_pixel(line->x0, line->y0, line->color, color_buffer);
 		if (line->x0 == line->x1 && line->y0 == line->y1)
 			break;
 		e2 = 2 * err;
@@ -143,16 +154,19 @@ void	draw_line(t_line *line)
 
 // mlx related functions
 
-void	init_mlx_data(t_img *img)
+void	init_mlx_data(t_window *window)
 {
+	t_img *img;
+
+	img = &window->win_img;
 	mlx_ptr = mlx_init();
 	if (mlx_ptr == NULL)
-		return ;//(1);
+		return ;//(1); // TODO handle error
     win_ptr = mlx_new_window(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
 	if (win_ptr == NULL)
 	{
 		free(win_ptr);
-		return ;//(1);
+		return ;//(1); // TODO handle error
 	}
     img->mlx_img = mlx_new_image(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
     img->addr = mlx_get_data_addr(
@@ -161,11 +175,12 @@ void	init_mlx_data(t_img *img)
 						&img->line_len, 
 						&img->endian
 					);	
-
-	color_buffer = (uint32_t*)ft_calloc(
+	// TODO handle new_img & get data addr errors
+	window->color_buffer = (uint32_t*)ft_calloc(
 		(uint32_t)WINDOW_WIDTH * (uint32_t)WINDOW_HEIGHT,
 		sizeof(uint32_t)
 	);
+	// TODO handle calloc error
 }
 
 // TODO LEGACY : manage to delete these getters

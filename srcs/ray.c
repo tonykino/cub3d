@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 15:39:42 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/10 15:40:18 by tokino           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ray.h"
 
 void	set_facing(t_ray *ray)
@@ -180,8 +192,8 @@ void	cast_ray(t_ray *ray, t_player *player, t_map *map)
 
 void	cast_all_rays(t_player *player, t_ray *rays, t_map *map)
 {
-	int	col;
-	float dist_proj_plane;
+	int		col;
+	float	dist_proj_plane;
 
 	dist_proj_plane = (WINDOW_WIDTH / 2) / tan(M_PI / 6);
 	col = 0;
@@ -214,7 +226,8 @@ void	set_hit_dest_coord(t_line *line, t_ray *ray)
 	line->color = COLOR_RED;
 }
 
-void	render_map_rays(t_map *map, t_player *player, t_ray rays[NUM_RAYS])
+void	render_map_rays(t_map *map, t_player *player, t_ray rays[NUM_RAYS], \
+	t_window *window)
 {
 	int		i;
 	t_line	line;
@@ -228,7 +241,7 @@ void	render_map_rays(t_map *map, t_player *player, t_ray rays[NUM_RAYS])
 			set_no_hit_dest_coord(&line, &rays[i], map->tile_size);
 		else
 			set_hit_dest_coord(&line, &rays[i]);
-		draw_line(&line);
+		draw_line(&line, window->color_buffer);
 		i++;
 	}
 }

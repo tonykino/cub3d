@@ -1,15 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   texture.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 15:51:48 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/10 15:51:49 by tokino           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TEXTURE_H
 # define TEXTURE_H
 
 # include <stdint.h>
 # include "mlx.h"
-// # include "struct.h"
 # include "graphics.h"
 
 # define NUM_TEXTURES 4
 
-uint32_t get_texel_color(t_img *texture, int x, int y);
-void load_textures(t_img *textures);
-void free_textures(void);
+uint32_t	get_texel_color(t_img *texture, int x, int y);
+void		load_textures(t_img *textures);
+void		free_textures(void);
 
 #endif
