@@ -21,15 +21,12 @@
 
 # define MINIMAP_SCALE_FACTOR 0.0125
 # define MAX_VIEW_DISTANCE 16.0
-# define MAX_RAY_DISTANCE MAX_VIEW_DISTANCE * 1024.0
 
 # define FOV_ANGLE (60 * (M_PI / 180))
 # define NUM_RAYS WINDOW_WIDTH
 # define DIST_PROJ_PLANE ((WINDOW_WIDTH / 2) / tan(FOV_ANGLE / 2))
 
-# define KeyPressMask	(1L<<0)
-# define KeyReleaseMask	(1L<<1)
-# define KeyPress		2
-# define KeyRelease		3
+# define COLOR_RED 0x00FF0000
+# define COLOR_PURPLE 0x00FF00FF
 
 #endif

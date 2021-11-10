@@ -36,12 +36,10 @@ typedef struct s_ray_hit {
 
 // PUBLIC API
 void cast_all_rays(t_player *player, t_ray *rays, t_map *map);
-void render_map_rays(t_player *player, t_ray rays[NUM_RAYS]);
+void render_map_rays(t_map *map, t_player *player, t_ray rays[NUM_RAYS]);
 
 // PRIVATE_API
 void cast_ray(t_ray *ray, t_player *player, t_map *map);
 void set_facing(t_ray *ray);
-
-
 
 #endif

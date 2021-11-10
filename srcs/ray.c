@@ -14,12 +14,12 @@ void	set_facing(t_ray *ray)
 	ray->is_facing_left = !ray->is_facing_right;
 }
 
-void	set_hit_distance(t_player *player, t_ray_hit *rh)
+void	set_hit_distance(t_player *player, t_ray_hit *rh, int tile_size)
 {
 	if (rh->hit)
 		rh->hit_dist = dist_between_points(player->x, player->y, rh->x, rh->y);
 	else
-		rh->hit_dist = MAX_RAY_DISTANCE;
+		rh->hit_dist = MAX_VIEW_DISTANCE * tile_size;
 }
 
 t_fpoint	set_nxt_touchs(t_ray *ray, t_player *player, int tilesize, bool dir)
@@ -145,7 +145,7 @@ t_ray_hit	cast_in_dir(t_ray *ray, t_player *player, t_map *map, bool dir)
 		else
 			nxt_touchs = sum_2_fpoints(steps, nxt_touchs);
 	}
-	set_hit_distance(player, &rh);
+	set_hit_distance(player, &rh, map->tile_size);
 	return (rh);
 }
 
@@ -181,22 +181,24 @@ void	cast_ray(t_ray *ray, t_player *player, t_map *map)
 void	cast_all_rays(t_player *player, t_ray *rays, t_map *map)
 {
 	int	col;
+	float dist_proj_plane;
 
+	dist_proj_plane = (WINDOW_WIDTH / 2) / tan(M_PI / 6);
 	col = 0;
 	while (col < NUM_RAYS)
 	{
 		rays[col].angle = player->rotation_angle + \
-			atan((col - NUM_RAYS / 2) / DIST_PROJ_PLANE);
+			atan((col - NUM_RAYS / 2) / dist_proj_plane);
 		cast_ray(rays + col, player, map);
 		col++;
 	}
 }
 
-void	set_no_hit_dest_coord(t_line *line, t_ray *ray)
+void	set_no_hit_dest_coord(t_line *line, t_ray *ray, int tile_size)
 {
-	line->x1 = line->x0 + floor(MAX_RAY_DISTANCE * \
+	line->x1 = line->x0 + floor(MAX_VIEW_DISTANCE * tile_size * \
 		MINIMAP_SCALE_FACTOR * cos(ray->angle));
-	line->y1 = line->y0 + floor(MAX_RAY_DISTANCE * \
+	line->y1 = line->y0 + floor(MAX_VIEW_DISTANCE * tile_size * \
 		MINIMAP_SCALE_FACTOR * sin(ray->angle));
 	line->color = COLOR_PURPLE;
 }
@@ -212,7 +214,7 @@ void	set_hit_dest_coord(t_line *line, t_ray *ray)
 	line->color = COLOR_RED;
 }
 
-void	render_map_rays(t_player *player, t_ray rays[NUM_RAYS])
+void	render_map_rays(t_map *map, t_player *player, t_ray rays[NUM_RAYS])
 {
 	int		i;
 	t_line	line;
@@ -223,7 +225,7 @@ void	render_map_rays(t_player *player, t_ray rays[NUM_RAYS])
 		line.x0 = player->x * MINIMAP_SCALE_FACTOR;
 		line.y0 = player->y * MINIMAP_SCALE_FACTOR;
 		if (rays[i].wall_hit_x == 0.0 && rays[i].wall_hit_y == 0.0)
-			set_no_hit_dest_coord(&line, &rays[i]);
+			set_no_hit_dest_coord(&line, &rays[i], map->tile_size);
 		else
 			set_hit_dest_coord(&line, &rays[i]);
 		draw_line(&line);
