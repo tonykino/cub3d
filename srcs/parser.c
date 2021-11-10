@@ -59,7 +59,7 @@ void parse_line(t_data *data, char *line)
 		}
 		if (line[i] == '1')
 		{
-			if(identifiers != 255)
+			if(identifiers != 127)
 			{
 				printf("identifier=%d\n", identifiers);
 				clear_and_exit(6, "An identifier is missing before map.");
@@ -192,20 +192,7 @@ void parse_texture(uint8_t *identifier, t_img *texture, char*line)
 			*identifier += WE_TEXTURE;
 		}
 	}
-	else if (!ft_strncmp(tex[0], "S", 1))
-	{
-		if ((*identifier & 0b00100000) == S_TEXTURE)
-		{
-			free(tex[0]);
-			free(tex[1]);
-			free(tex);
-			clear_and_exit(5, "Several Sprite texture declaration.");
-		}
-		else
-		{
-			*identifier += S_TEXTURE;
-		}
-	}
+
 	// printf("addr='%p' : tex[0]='%s', tex[1]='%s'\n", texture, tex[0], tex[1]);
 	texture->name = tex[0];
 	texture->path = tex[1];

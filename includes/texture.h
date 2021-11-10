@@ -6,7 +6,7 @@
 // # include "struct.h"
 # include "graphics.h"
 
-# define NUM_TEXTURES 5
+# define NUM_TEXTURES 4
 
 uint32_t get_texel_color(t_img *texture, int x, int y);
 void load_textures(t_img *textures);

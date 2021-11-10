@@ -14,9 +14,8 @@
 # define SO_TEXTURE 4
 # define EA_TEXTURE 8
 # define WE_TEXTURE 16
-# define S_TEXTURE 32
-# define CEIL_COLOR 64
-# define FLOOR_COLOR 128
+# define CEIL_COLOR 32
+# define FLOOR_COLOR 64
 
 // PUBLIC API
 void	parse_cub_file(t_data *data, char *file);

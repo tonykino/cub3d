@@ -4,7 +4,6 @@ SRC = 	$(addprefix srcs/, main.c \
 		hook.c \
 		map.c \
 		player.c \
-		sprite.c \
 		texture.c \
 		wall.c \
 		libft.c \

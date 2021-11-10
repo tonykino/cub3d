@@ -5,7 +5,6 @@
 
 # include "constants.h"
 # include "texture.h"
-# include "sprite.h"
 # include "map.h"
 # include "player.h"
 # include "ray.h"
@@ -24,7 +23,6 @@ typedef struct s_data
 {
 	t_window	window;
 	t_img		textures[NUM_TEXTURES];
-	t_sprite	sprites[NUM_SPRITES];
 	t_map 		map;
 	t_player	player;
 	t_ray		rays[NUM_RAYS];

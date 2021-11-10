@@ -23,7 +23,6 @@ void	init_all_data(t_data *data)
 {
 	init_window(&data->window);
 	init_textures(data->textures);
-	// init_sprites(data->sprites);
 	// init_map(&data->map);
 	// init_player(&data->player);
 	// init_rays(data->rays);

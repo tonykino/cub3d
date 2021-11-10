@@ -8,12 +8,10 @@ void render_scene(t_data *data)
 		data->rays,
 		data->textures
 	);
-	// render_sprite_projection(data->sprites, &data->map, &data->player, data->textures, data->rays);
 	if (MINIMAP_SCALE_FACTOR > 0)
 	{
 		render_map_grid(&data->map);
 		render_map_rays(&data->map, &data->player, data->rays);
-		render_map_sprites(data->sprites);
 		render_map_player(&data->player);
 	}
 
@@ -46,7 +44,6 @@ void setup(t_data *data)
 {
 	setup_map(&data->map);
 	setup_player(&data->player, &data->map);
-	setup_sprites(data->sprites);
 	load_textures(data->textures);
 }
 

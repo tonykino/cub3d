@@ -5,7 +5,6 @@ static char* texture_filenames[NUM_TEXTURES] = {
 	"./textures/musee_1.xpm",
 	"./textures/HD/dragon.xpm",
 	"./textures/HD/peeper.xpm",
-	"./textures/Sprite_1.xpm"
 };
 
 
