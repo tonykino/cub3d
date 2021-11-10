@@ -3,7 +3,7 @@ SRC = 	$(addprefix srcs/, main.c \
 		graphics.c \
 		hook.c \
 		map.c \
-		player.c \
+		$(addprefix player/, setup.c move.c render.c) \
 		texture.c \
 		wall.c \
 		libft.c \
@@ -43,6 +43,7 @@ libmlx.a:
 clean:
 	rm -rf *.o
 	rm -rf */*.o
+	rm -rf */*/*.o
 
 fclean:
 	rm -f $(NAME)
