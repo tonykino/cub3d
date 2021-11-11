@@ -6,14 +6,11 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:42:50 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 15:43:15 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/11 17:52:48 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "graphics.h"
-
-static void		*mlx_ptr;
-static void		*win_ptr;
 
 // img_pixel related functions
 static bool	pixel_is_out_of_screen(int x, int y)
@@ -159,16 +156,16 @@ void	init_mlx_data(t_window *window)
 	t_img *img;
 
 	img = &window->win_img;
-	mlx_ptr = mlx_init();
-	if (mlx_ptr == NULL)
+	window->mlx_ptr = mlx_init();
+	if (window->mlx_ptr == NULL)
 		return ;//(1); // TODO handle error
-    win_ptr = mlx_new_window(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
-	if (win_ptr == NULL)
+    window->win_ptr = mlx_new_window(window->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
+	if (window->win_ptr == NULL)
 	{
-		free(win_ptr);
+		free(window->win_ptr);
 		return ;//(1); // TODO handle error
 	}
-    img->mlx_img = mlx_new_image(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
+    img->mlx_img = mlx_new_image(window->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
     img->addr = mlx_get_data_addr(
 						img->mlx_img, 
 						&img->bpp, 
@@ -183,24 +180,12 @@ void	init_mlx_data(t_window *window)
 	// TODO handle calloc error
 }
 
-// TODO LEGACY : manage to delete these getters
-
-void *get_mlx_ptr(void)
+bool no_window(t_window *window)
 {
-	return (mlx_ptr);
+	return (window->win_ptr == NULL);
 }
 
-void *get_win_ptr(void)
+void clear_mlx_data(t_window *window)
 {
-	return (win_ptr);
-}
-
-bool no_window(void)
-{
-	return (win_ptr == NULL);
-}
-
-void clear_mlx_data(void *mlx_img)
-{
-	mlx_destroy_image(mlx_ptr, mlx_img);
+	mlx_destroy_image(window->mlx_ptr, window->win_img.mlx_img);
 }

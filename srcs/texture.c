@@ -18,7 +18,7 @@ uint32_t get_texel_color(t_img *texture, int x, int y)
 	return (pix_color);
 }
 
-void load_textures(t_img *textures)
+void load_textures(t_img *textures, t_window *window)
 {
 	int i;
 	i = 0;
@@ -26,7 +26,7 @@ void load_textures(t_img *textures)
 	{
 		textures[i].path = texture_filenames[i];
 		textures[i].mlx_img = mlx_xpm_file_to_image(
-			get_mlx_ptr(), 
+			window->mlx_ptr, 
 			textures[i].path, 
 			&textures[i].width,
 			&textures[i].height

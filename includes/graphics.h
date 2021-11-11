@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:43:57 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 15:46:26 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/11 17:44:46 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	copy_color_buffer_in_image(t_window *window);
 void	init_mlx_data(t_window *window);
 void	*get_mlx_ptr(void);
 void	*get_win_ptr(void);
-void	clear_mlx_data(void *mlx_img);
-bool	no_window(void);
+void	clear_mlx_data(t_window *window);
+bool	no_window(t_window *window);
 bool	is_transparent(uint32_t color);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:51:48 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 15:51:49 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/10 16:05:52 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define NUM_TEXTURES 4
 
 uint32_t	get_texel_color(t_img *texture, int x, int y);
-void		load_textures(t_img *textures);
+void		load_textures(t_img *textures, t_window *window);
 void		free_textures(void);
 
 #endif

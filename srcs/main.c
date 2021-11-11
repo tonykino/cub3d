@@ -11,7 +11,7 @@ void render_scene(t_data *data)
 	}
 
 	copy_color_buffer_in_image(&data->window);
-    mlx_put_image_to_window(get_mlx_ptr(), get_win_ptr(), \
+    mlx_put_image_to_window(data->window.mlx_ptr, data->window.win_ptr, \
 		data->window.win_img.mlx_img, 0, 0);
 }
 
@@ -23,7 +23,7 @@ void update_scene(t_data *data)
 
 int update_and_render(t_data *data)
 {
-	if (no_window())
+	if (no_window(&data->window))
 		return 1;
 	
 	// mlx_clear_window(data->mlx_ptr, data->win_ptr); // Useless ?
@@ -40,7 +40,7 @@ void setup(t_data *data)
 {
 	setup_map(&data->map);
 	setup_player(&data->player, &data->map);
-	load_textures(data->textures);
+	load_textures(data->textures, &data->window);
 }
 
 int	main(int argc, char **argv)
@@ -51,14 +51,14 @@ int	main(int argc, char **argv)
 	init_cub3d(&data, argc, argv);
 
 	setup(&data);
-	mlx_mouse_hook(get_win_ptr(), mouse_hook, 0);
-	mlx_hook(get_win_ptr(), 2, (1L << 0), &handle_keypress, &data.player);
-	mlx_hook(get_win_ptr(), 3, (1L << 1), &handle_keyrelease, &data.player);
-	mlx_loop_hook(get_mlx_ptr(), &update_and_render, &data);
-	mlx_loop(get_mlx_ptr());
+	mlx_mouse_hook(data.window.win_ptr, mouse_hook, 0);
+	mlx_hook(data.window.win_ptr, 2, (1L << 0), &handle_keypress, &data.player);
+	mlx_hook(data.window.win_ptr, 3, (1L << 1), &handle_keyrelease, &data.player);
+	mlx_loop_hook(data.window.mlx_ptr, &update_and_render, &data);
+	mlx_loop(data.window.mlx_ptr);
 
 	// // free_textures();
-	// clear_mlx_data(data.win_img.mlx_img);
+	// clear_mlx_data(&data.window);
 	printf("\n\n---- LEAKS ----\n");
 	system("leaks --quiet a.out");
 	return(0);
