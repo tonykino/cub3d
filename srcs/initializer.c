@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:42:02 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 15:42:20 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/11 19:08:54 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	init_cub3d(t_data *data, int argc, char **argv)
 	if (!valid_cub_file_name(argv[1]))
 		clear_and_exit(1, "Invalid map file name.");
 	init_all_data(data);
-	parse_cub_file(data, argv[1]);
+	// parse_cub_file(data, argv[1]);
 	init_mlx_data(&data->window);
 }
 

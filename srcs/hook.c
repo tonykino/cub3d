@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hook.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/11 19:11:24 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/11 19:12:16 by tokino           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "hook.h"
 
 int	handle_keypress(int keycode, t_player *player)
@@ -18,18 +30,18 @@ int	handle_keypress(int keycode, t_player *player)
 	{
 		player->turn_direction = 1;
 	}
-    printf("Press %d !\n", keycode);
+	printf("Press %d !\n", keycode);
 	return (0);
 }
 
-int handle_keyrelease(int keycode, t_player *player)
+int	handle_keyrelease(int keycode, t_data *data)
 {
+	t_player	*player;
+
+	player = &data->player;
 	if (keycode == ESC_KEY_SYM)
 	{
-		printf("\n\n---- LEAKS ----\n");
-		system("leaks --quiet a.out");
-		printf("Exit !\n");
-		exit(0);
+		cleanup_and_exit(data, 1);
 	}
 	else if (keycode == ARROW_UP_KEY_SYM)
 	{
@@ -47,11 +59,11 @@ int handle_keyrelease(int keycode, t_player *player)
 	{
 		player->turn_direction = 0;
 	}
-    printf("Release %d !\n", keycode);
+	printf("Release %d !\n", keycode);
 	return (0);
 }
 
-int mouse_hook(int button, int x, int y)
+int	mouse_hook(int button, int x, int y)
 {
 	printf("Click on %d : %d|%d !\n", button, x, y);
 	return (0);
