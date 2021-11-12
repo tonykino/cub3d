@@ -7,4 +7,10 @@ typedef struct s_fpoint
 	float y;
 }	t_fpoint;
 
+typedef struct s_ipoint
+{
+	int x;
+	int y;
+}	t_ipoint;
+
 #endif

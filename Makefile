@@ -1,6 +1,6 @@
 SRC = 	$(addprefix srcs/, main.c \
 		ray.c \
-		graphics.c \
+		$(addprefix graphics/, draw.c img_and_color_buffer.c mlx_wrapper.c) \
 		hook.c \
 		map.c \
 		$(addprefix player/, setup.c move.c render.c) \

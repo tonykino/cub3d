@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:15:52 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/11 19:15:53 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/12 14:09:00 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ int	update_and_render(t_data *data)
 {
 	if (no_window(&data->window))
 		return (1);
-	// mlx_clear_window(data->mlx_ptr, data->win_ptr); // Useless ?
-	// clear_img(&data->win_img);
 	clear_color_buffer(data->window.color_buffer);
 	update_scene(data);
 	render_scene(data);

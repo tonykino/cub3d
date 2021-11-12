@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:39:42 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 15:40:18 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/12 15:22:38 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,21 +208,21 @@ void	cast_all_rays(t_player *player, t_ray *rays, t_map *map)
 
 void	set_no_hit_dest_coord(t_line *line, t_ray *ray, int tile_size)
 {
-	line->x1 = line->x0 + floor(MAX_VIEW_DISTANCE * tile_size * \
+	line->b.x = line->a.x + floor(MAX_VIEW_DISTANCE * tile_size * \
 		MINIMAP_SCALE_FACTOR * cos(ray->angle));
-	line->y1 = line->y0 + floor(MAX_VIEW_DISTANCE * tile_size * \
+	line->b.y = line->a.y + floor(MAX_VIEW_DISTANCE * tile_size * \
 		MINIMAP_SCALE_FACTOR * sin(ray->angle));
 	line->color = COLOR_PURPLE;
 }
 
 void	set_hit_dest_coord(t_line *line, t_ray *ray)
 {
-	line->x1 = floor(ray->wall_hit_x * MINIMAP_SCALE_FACTOR);
-	line->y1 = floor(ray->wall_hit_y * MINIMAP_SCALE_FACTOR);
+	line->b.x = floor(ray->wall_hit_x * MINIMAP_SCALE_FACTOR);
+	line->b.y = floor(ray->wall_hit_y * MINIMAP_SCALE_FACTOR);
 	if (ray->is_facing_right && ray->wall_hit_x != 0)
-		line->x1 -= 1;
+		line->b.x -= 1;
 	if (ray->is_facing_down && ray->wall_hit_y != 0)
-		line->y1 -= 1;
+		line->b.y -= 1;
 	line->color = COLOR_RED;
 }
 
@@ -235,8 +235,8 @@ void	render_map_rays(t_map *map, t_player *player, t_ray rays[NUM_RAYS], \
 	i = 0;
 	while (i < NUM_RAYS)
 	{
-		line.x0 = player->x * MINIMAP_SCALE_FACTOR;
-		line.y0 = player->y * MINIMAP_SCALE_FACTOR;
+		line.a.x = player->x * MINIMAP_SCALE_FACTOR;
+		line.a.y = player->y * MINIMAP_SCALE_FACTOR;
 		if (rays[i].wall_hit_x == 0.0 && rays[i].wall_hit_y == 0.0)
 			set_no_hit_dest_coord(&line, &rays[i], map->tile_size);
 		else
