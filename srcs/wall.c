@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 12:09:24 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 15:38:51 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/12 22:28:57 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	render_wall_projection(t_data *data)
 		y = 0;
 		while (y < WINDOW_HEIGHT)
 		{
-			color = get_color(y, &wall, texture_offset_x);
+			color = get_color(data, y, &wall, texture_offset_x);
 			draw_pixel(x, y, color, data->window.color_buffer);
 			y++;
 		}
@@ -69,16 +69,16 @@ t_img	*get_wall_texture(t_img *textures, t_ray *ray)
 	if (ray->was_hit_vertical)
 	{
 		if (ray->is_facing_right)
-			return (textures + 0);
+			return (get_texture(textures, "EA"));
 		else
-			return (textures + 1);
+			return (get_texture(textures, "WE"));
 	}
 	else
 	{
 		if (ray->is_facing_up)
-			return (textures + 2);
+			return (get_texture(textures, "NO"));
 		else
-			return (textures + 3);
+			return (get_texture(textures, "SO"));
 	}	
 }
 
@@ -98,14 +98,14 @@ int	set_tex_offset_x(t_img *texture, t_ray *ray, int tilesize)
 	return (texture_offset_x);
 }
 
-uint32_t	get_color(int y, t_wall *wall, int texture_offset_x)
+uint32_t	get_color(t_data *data, int y, t_wall *wall, int texture_offset_x)
 {
 	int	yh;	
 	int	tex_offset_y;
 
 	if (y < wall->top)
 	{
-		return (0x0087CEEB);
+		return (data->ceil_color);
 	}
 	else if (y < wall->bottom)
 	{
@@ -115,6 +115,6 @@ uint32_t	get_color(int y, t_wall *wall, int texture_offset_x)
 	}
 	else
 	{
-		return (0x008B5A2B);
+		return (data->floor_color);
 	}
 }

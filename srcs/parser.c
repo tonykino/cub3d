@@ -97,9 +97,7 @@ void parse_resolution(uint8_t *identifier, t_window *window, char *line)
 	int width;
 	int height;
 
-	// printf("line='%s'\n", line);
 	res = ft_split(line, " \t");
-	// printf("res[0]='%s', res[1]='%s', res[2]='%s'\n", res[0], res[1], res[2]);
 	if (ft_strcmp(res[0], "R") || !ft_isnumber(res[1]) || !ft_isnumber(res[2]))
 	{
 		free(res[0]);
@@ -133,9 +131,7 @@ void parse_texture(uint8_t *identifier, t_img *texture, char*line)
 {
 	char **tex;
 
-	// printf("line='%s'\n", line);
 	tex = ft_split(line, " \t");
-	// printf("after split : tex[0]=%s, text[1]=%s\n\n\n\n", tex[0], tex[1]);
 	if (!ft_strncmp(tex[0], "NO", 2))
 	{
 		if ((*identifier & 0b00000010) == NO_TEXTURE)
@@ -193,10 +189,8 @@ void parse_texture(uint8_t *identifier, t_img *texture, char*line)
 		}
 	}
 
-	// printf("addr='%p' : tex[0]='%s', tex[1]='%s'\n", texture, tex[0], tex[1]);
 	texture->name = tex[0];
 	texture->path = tex[1];
-	// printf("texture->name = '%s', texture->path = '%s'\n", texture->name, texture->path);
 
 	// TODO : try to open file
 	// TODO : get width and height from xpm file => not needed, we got it with mlx function !!!! thx to Emma :D
