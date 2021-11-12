@@ -6,10 +6,6 @@ SRC = 	$(addprefix srcs/, main.c \
 		$(addprefix player/, setup.c move.c render.c) \
 		texture.c \
 		wall.c \
-		libft.c \
-		ft_atoi.c \
-		ft_split.c \
-		ft_strncmp.c \
 		get_next_line.c \
 		get_next_line_utils.c \
 		initializer.c \
@@ -32,11 +28,16 @@ LINUX_DEP = -lXext -lX11
 
 all: $(NAME)
 
-$(NAME): libmlx.a $(OBJ)
-	$(CC) -O3 -o $(NAME) $(OBJ) -L. -lm -lmlx $(LINUX_DEP)
+$(NAME): libft.a libmlx.a $(OBJ)
+	$(CC) -O3 -o $(NAME) $(OBJ) -L. -lm -lft -lmlx $(LINUX_DEP)
+
+libft.a:
+	$(MAKE) -C libft
+	mv libft/libft.a ./
+	cp libft/libft.h includes/
 
 libmlx.a:
-	cd minilibx-linux && make
+	$(MAKE) -C minilibx-linux
 	mv minilibx-linux/libmlx.a ./
 	cp minilibx-linux/mlx.h includes/
 
@@ -47,10 +48,13 @@ clean:
 
 fclean:
 	rm -f $(NAME)
+	rm -f libft.a
 	rm -f libmlx.a
+	rm -f includes/libft.h
 	rm -f includes/mlx.h
 	make clean
-	cd minilibx-linux && make clean
+	$(MAKE) fclean -C libft
+	$(MAKE) clean -C minilibx-linux
 
 re:
 	make fclean

@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:10:25 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/11 19:11:00 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/12 17:18:21 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ void	cleanup_and_exit(t_data *data, int exit_status)
 	if (window->win_img.mlx_img)
 		mlx_destroy_image(window->mlx_ptr, window->win_img.mlx_img);
 	while (i < NUM_TEXTURES)
+	{
 		if (data->textures[i].mlx_img)
-			mlx_destroy_image(window->mlx_ptr, data->textures[i++].mlx_img);
+			mlx_destroy_image(window->mlx_ptr, data->textures[i].mlx_img);
+		i++;
+	}
 	if (window->win_ptr)
 		mlx_destroy_window(window->mlx_ptr, window->win_ptr);
 	if (window->mlx_ptr)

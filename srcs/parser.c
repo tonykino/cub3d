@@ -20,7 +20,6 @@ void	parse_cub_file(t_data *data, char *file)
 			clear_and_exit(3, "Error reading .cub file.");
 		parse_line(data, line);
 	}
-
 	close(fd); // TOFINISH
 }
 
@@ -101,7 +100,7 @@ void parse_resolution(uint8_t *identifier, t_window *window, char *line)
 	// printf("line='%s'\n", line);
 	res = ft_split(line, " \t");
 	// printf("res[0]='%s', res[1]='%s', res[2]='%s'\n", res[0], res[1], res[2]);
-	if (ft_strcmp(res[0], "R") || !is_number(res[1]) || !is_number(res[2]))
+	if (ft_strcmp(res[0], "R") || !ft_isnumber(res[1]) || !ft_isnumber(res[2]))
 	{
 		free(res[0]);
 		free(res[1]);
@@ -136,6 +135,7 @@ void parse_texture(uint8_t *identifier, t_img *texture, char*line)
 
 	// printf("line='%s'\n", line);
 	tex = ft_split(line, " \t");
+	// printf("after split : tex[0]=%s, text[1]=%s\n\n\n\n", tex[0], tex[1]);
 	if (!ft_strncmp(tex[0], "NO", 2))
 	{
 		if ((*identifier & 0b00000010) == NO_TEXTURE)
@@ -213,7 +213,7 @@ void parse_color(uint8_t *identifier, t_data *data, char *line)
 	if (!ft_strcmp(colary[0], "C"))
 	{
 		color = &data->ceil_color;
-		if ((*identifier & 0b01000000) == CEIL_COLOR)
+		if ((*identifier & 0b00100000) == CEIL_COLOR)
 		{
 			free(colary[0]);
 			free(colary[1]);
@@ -230,7 +230,7 @@ void parse_color(uint8_t *identifier, t_data *data, char *line)
 	else
 	{
 		color = &data->floor_color;
-		if ((*identifier & 0b10000000) == FLOOR_COLOR)
+		if ((*identifier & 0b01000000) == FLOOR_COLOR)
 		{
 			free(colary[0]);
 			free(colary[1]);

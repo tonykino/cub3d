@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:42:50 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 15:47:31 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/12 16:05:35 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,6 @@ void	draw_rectangle(t_rect *rect, uint32_t *color_buffer)
 		}
 		x++;
 	}
-}
-
-t_ipoint	set_bresenham_steps(t_line *line)
-{
-	t_ipoint	steps;
-
-	if (line->a.x < line->b.x)
-		steps.x = 1;
-	else
-		steps.x = -1;
-	if (line->a.y < line->b.y)
-		steps.y = 1;
-	else
-		steps.y = -1;
-	return (steps);
 }
 
 void	draw_line(t_line *line, uint32_t *color_buffer)
@@ -72,4 +57,19 @@ void	draw_line(t_line *line, uint32_t *color_buffer)
 		}
 		draw_pixel(line->a.x, line->a.y, line->color, color_buffer);
 	}
+}
+
+t_ipoint	set_bresenham_steps(t_line *line)
+{
+	t_ipoint	steps;
+
+	if (line->a.x < line->b.x)
+		steps.x = 1;
+	else
+		steps.x = -1;
+	if (line->a.y < line->b.y)
+		steps.y = 1;
+	else
+		steps.y = -1;
+	return (steps);
 }

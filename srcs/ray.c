@@ -6,11 +6,16 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:39:42 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 15:22:38 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/12 16:39:20 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ray.h"
+
+float dist_between_points(float x1, float y1, float x2, float y2)
+{
+	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
 
 void	set_facing(t_ray *ray)
 {
