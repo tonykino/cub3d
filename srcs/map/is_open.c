@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 16:33:42 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 16:36:56 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 17:07:29 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ bool	is_open(t_map *map)
 				map_is_open_on_left(map, row, col) || \
 				map_is_open_on_right(map, row, col)))
 			{
-				printf("map ouverte !! row: %d, col: %d\n", row, col);
 				return (true);
 			}
 			col++;

@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture.h                                          :+:      :+:    :+:   */
+/*   ray_struct.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 15:51:48 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 17:34:43 by tokino           ###   ########.fr       */
+/*   Created: 2021/11/14 18:01:04 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/14 18:02:16 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEXTURE_H
-# define TEXTURE_H
+#ifndef RAY_STRUCT_H
+# define RAY_STRUCT_H
 
-# include <stdint.h>
-# include "mlx.h"
-# include "graphics_struct.h"
-# include "libft.h"
-# include "clear_and_exit.h"
-# include "data_struct.h"
+# include <stdbool.h>
 
-uint32_t	get_texel_color(t_img *texture, int x, int y);
-int			load_textures(t_img *textures, t_window *window);
-t_img		*get_texture(t_img *textures, char *name);
+typedef struct s_ray {
+	float	angle;
+	float	wall_hit_x;
+	float	wall_hit_y;
+	float	distance;
+	int		wall_hit_content;
+	bool	was_hit_vertical;
+	bool	is_facing_up;
+	bool	is_facing_down;
+	bool	is_facing_left;
+	bool	is_facing_right;
+}	t_ray;
 
 #endif

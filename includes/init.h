@@ -4,8 +4,10 @@
 # include "data_struct.h"
 # include "clear_and_exit.h"
 # include "parser.h"
-# include "graphics.h"
-# include "texture.h" 
+# include "graphics_struct.h"
+# include "player.h"
+# include "mlx_wrapper.h"
+# include "texture.h"
 
 // PUBLIC API
 void init_cub3d(t_data *data, int argc, char **argv);

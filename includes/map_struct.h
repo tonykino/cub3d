@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture.h                                          :+:      :+:    :+:   */
+/*   map_struct.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 15:51:48 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 17:34:43 by tokino           ###   ########.fr       */
+/*   Created: 2021/11/14 17:57:58 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/14 17:58:39 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEXTURE_H
-# define TEXTURE_H
+#ifndef MAP_STRUCT_H
+# define MAP_STRUCT_H
 
-# include <stdint.h>
-# include "mlx.h"
-# include "graphics_struct.h"
-# include "libft.h"
-# include "clear_and_exit.h"
-# include "data_struct.h"
-
-uint32_t	get_texel_color(t_img *texture, int x, int y);
-int			load_textures(t_img *textures, t_window *window);
-t_img		*get_texture(t_img *textures, char *name);
+typedef struct s_map {
+	int		tile_size;
+	int		num_rows;
+	int		num_cols;
+	char	**grid;
+}	t_map;
 
 #endif

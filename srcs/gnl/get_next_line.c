@@ -6,14 +6,13 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 14:54:08 by tokino            #+#    #+#             */
-/*   Updated: 2020/12/18 14:54:11 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 17:20:34 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-int		get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static char	buf[OPEN_MAX][BUFFER_SIZE + 1];
 	int			buf_len;
@@ -35,7 +34,7 @@ int		get_next_line(int fd, char **line)
 	return (OK);
 }
 
-int		update_line_with_buffer(char **line, char *buf)
+int	update_line_with_buffer(char **line, char *buf)
 {
 	*line = (char *)realloc_line(*line, buf);
 	if (*line == NULL)
@@ -91,8 +90,8 @@ void	strcat_buf_in_line(char *line, char *buf)
 
 void	bufshift(char buf[BUFFER_SIZE + 1], int should_shift_newline)
 {
-	ssize_t i;
-	ssize_t j;
+	ssize_t	i;
+	ssize_t	j;
 
 	i = 0;
 	j = 0;

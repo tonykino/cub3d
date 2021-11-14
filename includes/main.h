@@ -10,17 +10,17 @@
 
 # include "mlx.h"
 # include "constants.h"
+# include "clear_and_exit.h"
+# include "data_struct.h"
 # include "graphics.h"
 # include "hook.h"
 # include "libft.h"
 # include "ray.h"
-# include "data_struct.h"
 # include "texture.h"
 # include "map.h"
 # include "player.h"
 # include "wall.h"
 # include "get_next_line.h"
-# include "clear_and_exit.h"
 # include "init.h"
 
 #endif

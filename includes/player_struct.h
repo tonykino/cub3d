@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture.h                                          :+:      :+:    :+:   */
+/*   player_struct.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 15:51:48 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 17:34:43 by tokino           ###   ########.fr       */
+/*   Created: 2021/11/14 17:51:00 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/14 17:51:49 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEXTURE_H
-# define TEXTURE_H
+#ifndef PLAYER_STRUCT_H
+# define PLAYER_STRUCT_H
 
-# include <stdint.h>
-# include "mlx.h"
-# include "graphics_struct.h"
-# include "libft.h"
-# include "clear_and_exit.h"
-# include "data_struct.h"
-
-uint32_t	get_texel_color(t_img *texture, int x, int y);
-int			load_textures(t_img *textures, t_window *window);
-t_img		*get_texture(t_img *textures, char *name);
+// PUBLIC API
+typedef struct s_player {
+	float	x;
+	float	y;
+	float	width;
+	float	height;
+	int		turn_direction;
+	int		walk_direction;
+	float	rotation_angle;
+	float	walk_speed;
+	float	turn_speed;
+}	t_player;
 
 #endif

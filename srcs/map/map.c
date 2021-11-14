@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 16:30:18 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 16:31:19 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 18:32:12 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	get_content_at(t_map *map, t_fpoint *coord)
 void	render_map_grid(t_map *map, t_window *window)
 {
 	int		i;
-	size_t	j;
+	int		j;
 	t_rect	rect;
 
 	i = 0;

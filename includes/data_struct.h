@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:48:21 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/13 15:30:34 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 17:57:41 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # include <stdint.h>
 
 # include "constants.h"
-# include "graphics.h"
-# include "map.h"
-# include "player.h"
-# include "ray.h"
+# include "graphics_struct.h"
+# include "player_struct.h"
+# include "map_struct.h"
+# include "ray_struct.h"
 
 typedef struct s_data
 {

@@ -6,16 +6,17 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 12:14:09 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 22:28:34 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 18:06:30 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WALL_H
 # define WALL_H
 
-# include "ray.h"
-# include "texture.h"
 # include "data_struct.h"
+# include "ray_struct.h"
+# include "texture.h"
+# include "graphics.h"
 
 // PUBLIC API
 void		render_wall_projection(t_data *data);

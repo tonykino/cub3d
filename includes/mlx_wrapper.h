@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture.h                                          :+:      :+:    :+:   */
+/*   mlx_wrapper.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 15:51:48 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 17:34:43 by tokino           ###   ########.fr       */
+/*   Created: 2021/11/14 18:11:24 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/14 18:15:53 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEXTURE_H
-# define TEXTURE_H
+#ifndef MLX_WRAPPER_H
+# define MLX_WRAPPER_H
 
-# include <stdint.h>
+# include <stdlib.h>
+
 # include "mlx.h"
-# include "graphics_struct.h"
-# include "libft.h"
-# include "clear_and_exit.h"
 # include "data_struct.h"
+# include "graphics_struct.h"
+# include "clear_and_exit.h"
 
-uint32_t	get_texel_color(t_img *texture, int x, int y);
-int			load_textures(t_img *textures, t_window *window);
-t_img		*get_texture(t_img *textures, char *name);
+void	init_mlx_data(t_data *data, t_window *window);
+bool	no_window(t_window *window);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 14:31:25 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 16:59:16 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 17:45:06 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	setup_player(t_player *player, t_map *map)
 
 void	set_player_position(t_player *player, t_map *map)
 {
-	int row;
-	int col;
-	bool found_player;
+	int		row;
+	int		col;
+	bool	found_player;
 
 	row = 0;
 	found_player = false;
