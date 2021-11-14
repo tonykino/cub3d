@@ -6,15 +6,15 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 14:13:56 by tokino            #+#    #+#             */
-/*   Updated: 2020/11/14 14:15:20 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 18:31:44 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (s[i])

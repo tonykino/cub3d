@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 22:33:41 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/13 18:55:13 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 18:31:54 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ char			*ft_strchr(const char *s, int c);
 char			*ft_strdup(const char *s1);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
-size_t			ft_strlen(const char *s);
+int				ft_strlen(const char *s);
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 bool			ft_strcmp(const char *s1, const char *s2);
-char			*ft_strndup(const char *s, size_t n);
+char			*ft_strndup(const char *s, int n);
 char			*ft_strnstr(const char *haystack, const char *needle,
 					size_t len);
 char			*ft_strrchr(const char *s, int c);
