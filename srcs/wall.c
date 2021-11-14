@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 12:09:24 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 22:28:57 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 21:00:31 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,26 @@ void	render_wall_projection(t_data *data)
 	uint32_t	color;
 
 	x = 0;
-	while (x < NUM_RAYS)
+	while (x < data->window.width)
 	{
 		wall = set_wall(&data->rays[x], data->player.rotation_angle, \
-			data->map.tile_size);
+			data->map.tile_size, &data->window);
 		wall.texture = get_wall_texture(data->textures, &data->rays[x]);
 		texture_offset_x = set_tex_offset_x(wall.texture, &data->rays[x], \
 			data->map.tile_size);
 		y = 0;
-		while (y < WINDOW_HEIGHT)
+		while (y < data->window.height)
 		{
 			color = get_color(data, y, &wall, texture_offset_x);
-			draw_pixel(x, y, color, data->window.color_buffer);
+			draw_pixel(&data->window, x, y, color);
 			y++;
 		}
 		x++;
 	}
 }
 
-t_wall	set_wall(t_ray *ray, float player_rot_angle, int tilesize)
+t_wall	set_wall(t_ray *ray, float player_rot_angle, int tilesize, \
+	t_window *window)
 {
 	t_wall	wall;
 	float	perp_distance;
@@ -52,15 +53,15 @@ t_wall	set_wall(t_ray *ray, float player_rot_angle, int tilesize)
 	else
 	{
 		perp_distance = ray->distance * cos(ray->angle - player_rot_angle);
-		dist_proj_plane = (WINDOW_WIDTH / 2) / tan(M_PI / 6);
+		dist_proj_plane = (window->width / 2) / tan(M_PI / 6);
 		wall.height = (int)(tilesize * dist_proj_plane / perp_distance);
 	}
-	wall.top = (WINDOW_HEIGHT / 2) - (wall.height / 2);
+	wall.top = (window->height / 2) - (wall.height / 2);
 	if (wall.top < 0)
 		wall.top = 0;
 	wall.bottom = wall.top + (int)wall.height;
-	if (wall.bottom >= WINDOW_HEIGHT)
-		wall.bottom = WINDOW_HEIGHT - 1;
+	if (wall.bottom >= window->height)
+		wall.bottom = window->height - 1;
 	return (wall);
 }
 
@@ -109,7 +110,7 @@ uint32_t	get_color(t_data *data, int y, t_wall *wall, int texture_offset_x)
 	}
 	else if (y < wall->bottom)
 	{
-		yh = y - (WINDOW_HEIGHT / 2) + (wall->height / 2);
+		yh = y - (data->window.height / 2) + (wall->height / 2);
 		tex_offset_y = (int)((float)yh * wall->texture->height / wall->height);
 		return (get_texel_color(wall->texture, texture_offset_x, tex_offset_y));
 	}

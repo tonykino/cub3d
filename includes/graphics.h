@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:43:57 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 18:15:39 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 21:02:13 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
 # include "graphics_struct.h"
 
 // PUBLIC API
-void		draw_rectangle(t_rect *rect, uint32_t *color_buffer);
-void		draw_line(t_line *line, uint32_t *color_buffer);
-void		draw_pixel(int x, int y, uint32_t color, uint32_t *color_buffer);
-void		clear_color_buffer(uint32_t *color_buffer);
+void		draw_rectangle(t_window *window, t_rect *rect);
+void		draw_line(t_window *window, t_line *line);
+void		draw_pixel(t_window *window, int x, int y, uint32_t color);
+void		clear_color_buffer(t_window *window);
 void		copy_color_buffer_in_image(t_window *window);
 
 // PRIVATE API

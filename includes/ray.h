@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:50:04 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 19:14:48 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 21:59:35 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@
 # define VERTICAL 0
 
 // PUBLIC API
-void		cast_all_rays(t_player *player, t_ray *rays, t_map *map);
+void		cast_all_rays(t_window *window, t_player *player, \
+	t_ray *rays, t_map *map);
 void		render_map_rays(t_map *map, t_player *player, \
-	t_ray rays[NUM_RAYS], t_window *window);
+	t_ray *rays, t_window *window);
 
 // PRIVATE_API
 typedef struct s_ray_hit {

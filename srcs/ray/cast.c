@@ -6,23 +6,24 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:39:42 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 19:10:05 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 22:33:30 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ray.h"
 
-void	cast_all_rays(t_player *player, t_ray *rays, t_map *map)
+void	cast_all_rays(t_window *window, t_player *player, \
+	t_ray *rays, t_map *map)
 {
 	int		col;
 	float	dist_proj_plane;
 
-	dist_proj_plane = (WINDOW_WIDTH / 2) / tan(M_PI / 6);
+	dist_proj_plane = (window->width / 2) / tan(M_PI / 6);
 	col = 0;
-	while (col < NUM_RAYS)
+	while (col < window->width)
 	{
 		rays[col].angle = player->rotation_angle + \
-			atan((col - NUM_RAYS / 2) / dist_proj_plane);
+			atan((col - window->width / 2) / dist_proj_plane);
 		cast_ray(rays + col, player, map);
 		col++;
 	}

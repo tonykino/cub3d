@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:11:05 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 15:06:02 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 20:19:17 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,19 @@ void	parse_cub_file(t_data *data, char *file)
 
 void	parse_line(t_data *data, char *line)
 {
-	static bool		is_map_started;
+	static bool	is_map_started;
+	static bool	is_map_finished;
 
 	if (!is_map_started)
 		is_map_started = parse_identifier_line(data, line);
-	if (is_map_started)
+	if (is_map_started && !is_map_finished)
 	{
 		if (is_blank_line(line))
-			free_line_and_eoe(line, data, "Blank line inside map.");
+			is_map_finished = true;
 		parse_map_line(data, line);
 	}
+	else if (is_map_finished && !is_blank_line(line))
+		free_line_and_eoe(line, data, "Blank line inside map.");
 	return (free(line));
 }
 

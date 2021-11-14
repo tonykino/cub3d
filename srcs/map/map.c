@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 16:30:18 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 18:32:12 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 20:57:02 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	render_map_grid(t_map *map, t_window *window)
 				rect.color = 0x00123456;
 			else
 				rect.color = 0xFF000000;
-			draw_rectangle(&rect, window->color_buffer);
+			draw_rectangle(window, &rect);
 			j++;
 		}
 		i++;

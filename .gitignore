@@ -1,4 +1,6 @@
 /.dep
 /.obj
 /.vscode
+/cub3D_leaks_maps_tester/
+/cub3d_destroyer/
 cub3D

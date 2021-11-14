@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 18:11:24 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 18:15:53 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 22:52:20 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@
 
 void	init_mlx_data(t_data *data, t_window *window);
 bool	no_window(t_window *window);
+void	resize_window_if_needed(t_window *window);
 
 #endif

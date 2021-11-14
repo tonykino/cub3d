@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 19:13:16 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 19:13:28 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 22:52:29 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_cub3d(t_data *data, int argc, char **argv);
 
 // PRIVATE API
 bool	valid_cub_file_name(char *filename);
+
 void	init_all_data(t_data *data);
 void	init_window(t_window *window);
 void	init_textures(t_img *textures);

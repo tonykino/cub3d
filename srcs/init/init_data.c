@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 13:54:14 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 13:58:12 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 21:53:43 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_all_data(t_data *data)
 	init_textures(data->textures);
 	data->ceil_color = 0;
 	data->floor_color = 0;
+	data->rays = NULL;
 	init_map(&data->map);
 }
 

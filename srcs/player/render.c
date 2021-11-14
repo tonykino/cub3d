@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 12:51:41 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 15:26:51 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 20:57:28 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	render_map_player(t_player *player, t_window *window)
 	player_rect.width = player->width * MINIMAP_SCALE_FACTOR;
 	player_rect.height = player->height * MINIMAP_SCALE_FACTOR;
 	player_rect.color = 0x00FFFF00;
-	draw_rectangle(&player_rect, window->color_buffer);
+	draw_rectangle(window, &player_rect);
 	player_line.a.x = player->x * MINIMAP_SCALE_FACTOR;
 	player_line.a.y = player->y * MINIMAP_SCALE_FACTOR;
 	player_line.b.x = (player->x + cos(player->rotation_angle) * 1024) \
@@ -30,5 +30,5 @@ void	render_map_player(t_player *player, t_window *window)
 	player_line.b.y = (player->y + sin(player->rotation_angle) * 1024) \
 		* MINIMAP_SCALE_FACTOR;
 	player_line.color = 0x000000FF;
-	draw_line(&player_line, window->color_buffer);
+	draw_line(window, &player_line);
 }

@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:48:21 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 17:57:41 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 21:56:55 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_data
 	t_img		textures[NUM_TEXTURES];
 	t_map		map;
 	t_player	player;
-	t_ray		rays[NUM_RAYS];
+	t_ray		*rays;
 	uint32_t	ceil_color;
 	uint32_t	floor_color;
 }	t_data;

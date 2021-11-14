@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:10:25 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 18:50:22 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 22:08:51 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	cleanup(t_data *data)
 	window = &data->window;
 	clean_textures(window, data->textures);
 	clean_map(&data->map);
+	if (data->rays)
+		free(data->rays);
 	if (window->color_buffer)
 		free(window->color_buffer);
 	if (window->win_img.mlx_img)

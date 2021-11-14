@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:15:52 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 18:50:38 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 21:02:35 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	render_scene(t_data *data)
 void	update_scene(t_data *data)
 {
 	move_player(&data->player, &data->map);
-	cast_all_rays(&data->player, data->rays, &data->map);
+	cast_all_rays(&data->window, &data->player, data->rays, &data->map);
 }
 
 int	update_and_render(t_data *data)
 {
 	if (no_window(&data->window))
 		return (1);
-	clear_color_buffer(data->window.color_buffer);
+	clear_color_buffer(&data->window);
 	update_scene(data);
 	render_scene(data);
 	return (0);
