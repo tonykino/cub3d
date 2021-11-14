@@ -1,17 +1,16 @@
 SRC = 	$(addprefix srcs/, main.c \
-		ray.c \
-		$(addprefix graphics/, draw.c img_and_color_buffer.c mlx_wrapper.c) \
-		hook.c \
-		map.c \
-		$(addprefix player/, setup.c move.c render.c) \
-		texture.c \
-		wall.c \
-		get_next_line.c \
-		get_next_line_utils.c \
-		initializer.c \
-		clear_and_exit.c \
-		parser.c)
-
+			$(addprefix parser/, parser.c resolution.c texture.c \
+				ceil_floor_color.c map.c utilities.c) \
+			$(addprefix graphics/, draw.c img_and_color_buffer.c mlx_wrapper.c) \
+			$(addprefix player/, setup.c move.c render.c) \
+			$(addprefix init/, init_cub3d.c init_data.c) \
+			$(addprefix gnl/, get_next_line.c get_next_line_utils.c) \
+			ray.c \
+			hook.c \
+			map.c \
+			texture.c \
+			wall.c \
+			clear_and_exit.c)
 
 HEADER	= $(addprefix -I , includes)
 

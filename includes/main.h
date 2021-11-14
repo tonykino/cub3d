@@ -21,6 +21,6 @@
 # include "wall.h"
 # include "get_next_line.h"
 # include "clear_and_exit.h"
-# include "initializer.h"
+# include "init.h"
 
 #endif

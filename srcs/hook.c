@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:11:24 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/11 19:12:16 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 11:33:07 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	handle_keyrelease(int keycode, t_data *data)
 	player = &data->player;
 	if (keycode == ESC_KEY_SYM)
 	{
-		cleanup_and_exit(data, 1);
+		cleanup_and_exit(data, 0);
 	}
 	else if (keycode == ARROW_UP_KEY_SYM)
 	{

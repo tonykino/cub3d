@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 22:22:53 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 22:24:54 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/13 14:48:13 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ uint32_t	get_texel_color(t_img *texture, int x, int y)
 	return (pix_color);
 }
 
-void	load_textures(t_img *textures, t_window *window)
+int	load_textures(t_img *textures, t_window *window)
 {
 	int	i;
 
@@ -35,6 +35,8 @@ void	load_textures(t_img *textures, t_window *window)
 				&textures[i].width,
 				&textures[i].height
 				);
+		if (textures[i].mlx_img == NULL)
+			return (-1);
 		textures[i].addr = mlx_get_data_addr(
 				textures[i].mlx_img,
 				&textures[i].bpp,
@@ -43,6 +45,7 @@ void	load_textures(t_img *textures, t_window *window)
 				);
 		i++;
 	}
+	return (0);
 }
 
 t_img	*get_texture(t_img *textures, char *name)

@@ -1,22 +1,5 @@
 #include "map.h"
 
-// TODO : put this grid in map struct
-static const int	grid[13][20] = { \
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1}, \
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
-		{0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0}, \
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1}, \
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1} \
-	};
-
 bool map_has_wall_at(t_map *map, float x, float y)
 {
 	int map_x_index;
@@ -27,7 +10,7 @@ bool map_has_wall_at(t_map *map, float x, float y)
 		return (false);
 	map_x_index = floor(x / map->tile_size);
 	map_y_index = floor(y / map->tile_size);
-	return (grid[map_y_index][map_x_index] == 1);
+	return (map->grid[map_y_index][map_x_index] == '1');
 }
 
 bool is_inside_map(t_map *map, t_fpoint *coord)
@@ -36,39 +19,38 @@ bool is_inside_map(t_map *map, t_fpoint *coord)
 		coord->y >= 0 && (coord->y < map->num_rows * map->tile_size));
 }
 
-int get_content_at(t_fpoint *coord)
-{
-	return (grid[(int)coord->y][(int)coord->x]);
-}
-
-void setup_map(t_map *map) // TODO : Warning hardcoded !!
-{
-	map->tile_size = 1024;
-	map->num_rows = 13;
-	map->num_cols = 20;
+int get_content_at(t_map *map, t_fpoint *coord)
+{	
+	if ((int)coord->y >= map->num_rows || (int)coord->x >= map->num_cols)
+		return ('0');
+	else
+		return (map->grid[(int)coord->y][(int)coord->x]);
 }
 
 void	render_map_grid(t_map *map, t_window *window)
 {
 	int i;
-	int j;
+	size_t j;
 	t_rect rect;
 
 	i = 0;
 	while (i < map->num_rows)
 	{
 		j = 0;
-		while (j < map->num_cols)
+		while (j < ft_strlen(map->grid[i]))
 		{
+			// TODO : minimap should be proportional to window, not to tile_size !!
 			rect.x = j * map->tile_size * MINIMAP_SCALE_FACTOR;
 			rect.y = i * map->tile_size * MINIMAP_SCALE_FACTOR;
 			rect.width = ceil(map->tile_size * MINIMAP_SCALE_FACTOR);
 			rect.height = ceil(map->tile_size * MINIMAP_SCALE_FACTOR);
 
-			if (grid[i][j] == 0)
+			if (map->grid[i][j] == '0')
 				rect.color = 0x00AAAAAA;
-			else
+			else if (map->grid[i][j] == '1')
 				rect.color = 0x00123456;
+			else
+				rect.color = 0xFF000000;
 
 			draw_rectangle(&rect, window->color_buffer);
 			j++;

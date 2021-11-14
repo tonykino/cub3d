@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:48:21 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 15:48:46 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/13 15:30:34 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdint.h>
 
 # include "constants.h"
-# include "texture.h"
+# include "graphics.h"
 # include "map.h"
 # include "player.h"
 # include "ray.h"

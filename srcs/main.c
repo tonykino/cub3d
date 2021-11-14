@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:15:52 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 14:09:00 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 13:57:04 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,12 @@ int	update_and_render(t_data *data)
 	return (0);
 }
 
-void	setup(t_data *data)
-{
-	setup_map(&data->map);
-	setup_player(&data->player, &data->map);
-	load_textures(data->textures, &data->window);
-}
-
 int	main(int argc, char **argv)
 {
 	t_data	data;
 
 	// system("clear && echo ---- Start Cub3D ----");
 	init_cub3d(&data, argc, argv);
-	setup(&data);
 	mlx_mouse_hook(data.window.win_ptr, mouse_hook, 0);
 	mlx_hook(data.window.win_ptr, 2, (1L << 0), &handle_keypress, &data.player);
 	mlx_hook(data.window.win_ptr, 3, (1L << 1), &handle_keyrelease, &data);

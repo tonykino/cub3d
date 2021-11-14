@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:10:09 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/11 19:10:13 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 11:34:54 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # include "data_struct.h"
 
-void	clear_and_exit(int err_code, char *err_msg);
+void	exit_on_error(t_data *data, char *err_msg);
 void	cleanup_and_exit(t_data *data, int exit_status);
 
 #endif

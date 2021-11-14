@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:39:42 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 16:39:20 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 14:51:48 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,13 @@ t_fpoint	sum_2_fpoints(t_fpoint a, t_fpoint b)
 	return (res);
 }
 
-void	update_rh_and_nxt_touchs(t_ray_hit *rh, t_fpoint *ntouchs, int tilesize)
+void	update_rh_and_nxt_touchs(t_ray_hit *rh, t_fpoint *ntouchs, t_map *map)
 {
 	rh->x = ntouchs->x;
 	rh->y = ntouchs->y;
-	ntouchs->x = floor(ntouchs->x / tilesize);
-	ntouchs->y = floor(ntouchs->y / tilesize);
-	rh->wall_content = get_content_at(ntouchs);
+	ntouchs->x = floor(ntouchs->x / map->tile_size);
+	ntouchs->y = floor(ntouchs->y / map->tile_size);
+	rh->wall_content = get_content_at(map, ntouchs);
 	rh->hit = true;
 }
 
@@ -156,7 +156,7 @@ t_ray_hit	cast_in_dir(t_ray *ray, t_player *player, t_map *map, bool dir)
 		if ((dir == HORIZONTAL && map_has_wall_at(map, nxt_touchs.x, xy_opp)) \
 			|| (dir == VERTICAL && map_has_wall_at(map, xy_opp, nxt_touchs.y)))
 		{
-			update_rh_and_nxt_touchs(&rh, &nxt_touchs, map->tile_size);
+			update_rh_and_nxt_touchs(&rh, &nxt_touchs, map);
 			break ;
 		}
 		else

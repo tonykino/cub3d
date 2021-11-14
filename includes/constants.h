@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:46:41 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 15:49:24 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/13 15:27:18 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define MAX_VIEW_DISTANCE 32.0
 
 # define NUM_RAYS WINDOW_WIDTH
+# define NUM_TEXTURES 4
 
 # define COLOR_RED 0x00FF0000
 # define COLOR_PURPLE 0x00FF00FF
