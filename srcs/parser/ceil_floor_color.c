@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:02:22 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 13:49:08 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 17:01:49 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	parse_ceil_floor_color(uint8_t *identifier, t_data *data, char *line)
 	if (ary == NULL)
 		free_line_and_eoe(line, data, "Error while spliting ceil/floor line.");
 	if (number_of_splitted_elt(ary) != 4)
-		free_ary_line_and_eoe(ary, line, data, "Ceil/floor should be 4 elts");
+		free_ary_line_and_eoe(ary, line, data, "Ceil/floor should be 4 elts.");
 	if (is_duplicated_color(ary, identifier))
-		free_ary_line_and_eoe(ary, line, data, "Duplicated ceil/floor line");
+		free_ary_line_and_eoe(ary, line, data, "Duplicated ceil/floor line.");
 	if (are_colors_invalid(ary))
-		free_ary_line_and_eoe(ary, line, data, "Wrong ceil/floor color params");
+		free_ary_line_and_eoe(ary, line, data, "Wrong ceil/floor color:0-255");
 	if (!ft_strcmp(ary[0], "C"))
 	{
 		color = &data->ceil_color;

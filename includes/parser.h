@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 16:57:37 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 14:21:03 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 15:03:41 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	parse_cub_file(t_data *data, char *file);
 
 void	parse_line(t_data *data, char *line);
 bool	parse_identifier_line(t_data *data, char *line);
+bool	is_blank_line(char *line);
 
 void	parse_resolution(t_data *data, uint8_t *identifier, t_window *window, char *line);
 

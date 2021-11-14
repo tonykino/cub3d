@@ -5,9 +5,9 @@ SRC = 	$(addprefix srcs/, main.c \
 			$(addprefix player/, setup.c move.c render.c) \
 			$(addprefix init/, init_cub3d.c init_data.c) \
 			$(addprefix gnl/, get_next_line.c get_next_line_utils.c) \
+			$(addprefix map/, map.c is_valid.c is_open.c) \
 			ray.c \
 			hook.c \
-			map.c \
 			texture.c \
 			wall.c \
 			clear_and_exit.c)

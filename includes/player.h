@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 14:35:18 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/10 15:28:04 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 16:56:24 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,8 @@ bool	bottom_touch(t_map *map, t_player *player, float new_y);
 bool	left_touch(t_map *map, t_player *player, float new_x);
 bool	right_touch(t_map *map, t_player *player, float new_x);
 bool	top_touch(t_map *map, t_player *player, float new_y);
+
+void	set_player_position(t_player *player, t_map *map);
+void	set_player_orientation(t_player *player, char orientation);
 
 #endif

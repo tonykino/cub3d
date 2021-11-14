@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 19:44:50 by tokino            #+#    #+#             */
-/*   Updated: 2020/11/14 19:44:52 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 16:10:22 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,5 @@ char	*ft_strchr(const char *s, int c)
 		}
 		i++;
 	}
-	if (s2[i] == (unsigned char)c)
-	{
-		return ((char *)(s2 + i));
-	}
-	else
-	{
-		return (NULL);
-	}
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:11:05 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 13:49:21 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 15:06:02 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	parse_line(t_data *data, char *line)
 		is_map_started = parse_identifier_line(data, line);
 	if (is_map_started)
 	{
+		if (is_blank_line(line))
+			free_line_and_eoe(line, data, "Blank line inside map.");
 		parse_map_line(data, line);
 	}
 	return (free(line));
@@ -80,4 +82,14 @@ bool	parse_identifier_line(t_data *data, char *line)
 	else
 		free_line_and_eoe(line, data, "Unknown identifier detected.");
 	return (false);
+}
+
+bool	is_blank_line(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] && ft_strchr(" \t", line[i]))
+		i++;
+	return (line[i] == '\0');
 }

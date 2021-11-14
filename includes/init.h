@@ -18,4 +18,14 @@ void	init_textures(t_img *textures);
 void	init_img(t_img *img);
 void	init_map(t_map *map);
 
+void	check_map_validity(t_data *data);
+bool	is_invalid_char(t_map *map);
+bool	is_exactly_one_player(t_map *map);
+
+bool	is_open(t_map *map);
+bool	map_is_open_on_left(t_map *map, int row, int col);
+bool	map_is_open_on_right(t_map *map, int row, int col);
+bool	map_is_open_on_top(t_map *map, int row, int col);
+bool	map_is_open_on_bottom(t_map *map, int row, int col);
+
 #endif
