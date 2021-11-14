@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:15:52 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 13:57:04 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 18:50:38 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	// system("clear && echo ---- Start Cub3D ----");
 	init_cub3d(&data, argc, argv);
 	mlx_mouse_hook(data.window.win_ptr, mouse_hook, 0);
 	mlx_hook(data.window.win_ptr, 2, (1L << 0), &handle_keypress, &data.player);

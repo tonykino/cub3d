@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 14:35:18 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 18:05:16 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 19:12:57 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include "libft.h"
 
 // PUBLIC API
-
-
 void	move_player(t_player *player, t_map *map);
 void	render_map_player(t_player *player, t_window *window);
 void	setup_player(t_player *player, t_map *map);

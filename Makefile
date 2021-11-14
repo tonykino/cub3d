@@ -6,7 +6,7 @@ SRC = 	$(addprefix srcs/, main.c \
 			$(addprefix init/, init_cub3d.c init_data.c) \
 			$(addprefix gnl/, get_next_line.c get_next_line_utils.c) \
 			$(addprefix map/, map.c is_valid.c is_open.c) \
-			ray.c \
+			$(addprefix ray/, cast.c cast_dir.c cast_dir2.c render.c) \
 			hook.c \
 			texture.c \
 			wall.c \

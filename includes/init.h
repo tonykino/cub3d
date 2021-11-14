@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/14 19:13:16 by tokino            #+#    #+#             */
+/*   Updated: 2021/11/14 19:13:28 by tokino           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef INIT_H
 # define INIT_H
 
@@ -10,7 +22,7 @@
 # include "texture.h"
 
 // PUBLIC API
-void init_cub3d(t_data *data, int argc, char **argv);
+void	init_cub3d(t_data *data, int argc, char **argv);
 
 // PRIVATE API
 bool	valid_cub_file_name(char *filename);
