@@ -31,6 +31,8 @@ all: $(NAME)
 $(NAME): libft.a libmlx.a $(OBJ)
 	$(CC) -O3 -o $(NAME) $(OBJ) -L. -lm -lft -lmlx $(LINUX_DEP)
 
+bonus: $(NAME)
+
 libft.a:
 	$(MAKE) -C libft
 	mv libft/libft.a ./

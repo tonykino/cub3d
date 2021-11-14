@@ -6,13 +6,13 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 14:27:06 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/12 16:39:03 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 23:29:15 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "player.h"
 
-void	move_player(t_player *player, t_map *map)
+void	move_player(t_player *player, t_map *map, bool is_bonus)
 {
 	float	move_step;
 	float	new_x;
@@ -23,12 +23,12 @@ void	move_player(t_player *player, t_map *map)
 	move_step = player->walk_direction * player->walk_speed;
 	new_x = player->x + cos(player->rotation_angle) * move_step;
 	new_y = player->y + sin(player->rotation_angle) * move_step;
-	if ((!left_touch(map, player, new_x) && new_x < player->x) || \
+	if (!is_bonus || (!left_touch(map, player, new_x) && new_x < player->x) || \
 		(!right_touch(map, player, new_x) && new_x > player->x))
 	{
 		player->x = new_x;
 	}
-	if ((!top_touch(map, player, new_y) && new_y < player->y) || \
+	if (!is_bonus || (!top_touch(map, player, new_y) && new_y < player->y) || \
 		(!bottom_touch(map, player, new_y) && new_y > player->y))
 	{
 		player->y = new_y;

@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 14:35:18 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 19:12:57 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 23:25:25 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdio.h>
 # include <math.h>
+# include <stdbool.h>
+
 # include "constants.h"
 # include "player_struct.h"
 # include "map.h"
@@ -22,7 +24,7 @@
 # include "libft.h"
 
 // PUBLIC API
-void	move_player(t_player *player, t_map *map);
+void	move_player(t_player *player, t_map *map, bool is_bonus);
 void	render_map_player(t_player *player, t_window *window);
 void	setup_player(t_player *player, t_map *map);
 

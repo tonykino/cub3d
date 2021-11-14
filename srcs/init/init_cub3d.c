@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:42:02 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 22:07:10 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 23:55:46 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,15 @@ void	init_cub3d(t_data *data, int argc, char **argv)
 	int	eflag;
 
 	init_all_data(data);
-	if (argc != 2)
+	if (argc != 2 && argc != 3)
 		exit_on_error(data, "Invalid number of arguments.");
+	if (argc == 3)
+	{
+		if (!strcmp(argv[2], "--bonus"))
+			data->is_bonus = true;
+		else
+			exit_on_error(data, "Third argument can only be '--bonus'.");
+	}
 	if (!valid_cub_file_name(argv[1]))
 		exit_on_error(data, "Invalid map extension file.");
 	parse_cub_file(data, argv[1]);

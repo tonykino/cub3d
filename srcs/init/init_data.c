@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 13:54:14 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 21:53:43 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 23:23:23 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_all_data(t_data *data)
 	data->ceil_color = 0;
 	data->floor_color = 0;
 	data->rays = NULL;
+	data->is_bonus = false;
 	init_map(&data->map);
 }
 

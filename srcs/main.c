@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:15:52 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 21:02:35 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/14 23:25:04 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	render_scene(t_data *data)
 
 void	update_scene(t_data *data)
 {
-	move_player(&data->player, &data->map);
+	move_player(&data->player, &data->map, data->is_bonus);
 	cast_all_rays(&data->window, &data->player, data->rays, &data->map);
 }
 
