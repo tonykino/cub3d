@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:39:42 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 22:33:30 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/15 18:39:41 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	cast_all_rays(t_window *window, t_player *player, \
 	int		col;
 	float	dist_proj_plane;
 
-	dist_proj_plane = (window->width / 2) / tan(M_PI / 6);
+	dist_proj_plane = ((float)window->width / 2) / tan(M_PI / 6);
 	col = 0;
 	while (col < window->width)
 	{
 		rays[col].angle = player->rotation_angle + \
-			atan((col - window->width / 2) / dist_proj_plane);
+			atan((col - (float)window->width / 2) / dist_proj_plane);
 		cast_ray(rays + col, player, map);
 		col++;
 	}
