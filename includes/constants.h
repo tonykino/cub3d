@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:46:41 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/15 14:08:58 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/15 18:57:26 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define D_D_KEY_SYM 100
 
 # define MINIMAP_SCALE_FACTOR 0.0
-# define MAX_VIEW_DISTANCE 32.0
+# define MAX_VIEW_DISTANCE 64.0
 
 # define NUM_TEXTURES 4
 
