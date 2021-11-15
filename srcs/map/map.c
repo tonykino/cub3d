@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 16:30:18 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 20:57:02 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/15 14:47:50 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	get_content_at(t_map *map, t_fpoint *coord)
 		return (map->grid[(int)coord->y][(int)coord->x]);
 }
 
+// Minimap should be proportional to window, not to tile_size !!
 void	render_map_grid(t_map *map, t_window *window)
 {
 	int		i;
@@ -51,7 +52,6 @@ void	render_map_grid(t_map *map, t_window *window)
 		j = 0;
 		while (j < ft_strlen(map->grid[i]))
 		{
-			// TODO : minimap should be proportional to window, not to tile_size !!
 			rect.x = j * map->tile_size * MINIMAP_SCALE_FACTOR;
 			rect.y = i * map->tile_size * MINIMAP_SCALE_FACTOR;
 			rect.width = ceil(map->tile_size * MINIMAP_SCALE_FACTOR);

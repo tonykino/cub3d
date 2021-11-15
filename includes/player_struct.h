@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 17:51:00 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 17:51:49 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/15 12:22:47 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_player {
 	float	height;
 	int		turn_direction;
 	int		walk_direction;
+	int		lateral_direction;
 	float	rotation_angle;
 	float	walk_speed;
 	float	turn_speed;

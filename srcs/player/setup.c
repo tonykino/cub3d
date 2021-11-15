@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 14:31:25 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 18:48:50 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/15 12:23:32 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	setup_player(t_player *player, t_map *map)
 	player->height = map->tile_size / 2;
 	player->turn_direction = 0;
 	player->walk_direction = 0;
+	player->lateral_direction = 0;
 	player->walk_speed = (float)map->tile_size / 16;
 	player->turn_speed = M_PI / 90;
 }
