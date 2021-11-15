@@ -6,7 +6,7 @@
 /*   By: tokino <tokino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 16:57:37 by tokino            #+#    #+#             */
-/*   Updated: 2021/11/14 19:12:46 by tokino           ###   ########.fr       */
+/*   Updated: 2021/11/15 15:48:40 by tokino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <errno.h>
 # include <unistd.h>
 # include <string.h>
+# include <limits.h>
 
 # include "data_struct.h"
 # include "clear_and_exit.h"
@@ -40,6 +41,7 @@ bool	is_blank_line(char *line);
 
 void	parse_resolution(t_data *data, uint8_t *identifier, \
 	t_window *window, char *line);
+bool	is_out_of_range(char *res);
 
 void	parse_texture(t_data *data, uint8_t *identifier, \
 	t_img *texture, char*line);
